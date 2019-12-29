@@ -1,0 +1,27 @@
+{
+  "name": "patreon.js",
+  "version": "0.0.1",
+  "description": "JS wrapper for the Patreon ReST API",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/traxam/patreon.js.git"
+  },
+  "keywords": [
+    "patreon",
+    "api",
+    "wrapper"
+  ],
+  "author": "traxam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/traxam/patreon.js/issues"
+  },
+  "homepage": "https://gitlab.com/traxam/patreon.js#readme",
+  "devDependencies": {
+    "standard": "^14.3.1"
+  }
+}
