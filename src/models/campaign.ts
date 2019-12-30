@@ -1,4 +1,5 @@
 import { User } from "./user";
+import { Pledge } from "./pledge";
 
 /**
  * A campaign data object.
@@ -93,5 +94,5 @@ export class Campaign {
    * The campaign's goals
    */
   goals: unknown[];
-  pledges: unknown[];
+  pledges: Pledge[];
 }
