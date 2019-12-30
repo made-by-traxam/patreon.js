@@ -4,7 +4,7 @@
   "description": "JS wrapper for the Patreon ReST API",
   "main": "index.js",
   "scripts": {
-    "test": "npx semistandard"
+    "test": "npx semistandard && npx jest"
   },
   "repository": {
     "type": "git",
@@ -22,8 +22,11 @@
   },
   "homepage": "https://gitlab.com/traxam/patreon.js#readme",
   "devDependencies": {
+    "@types/jest": "^24.0.25",
     "@types/request": "^2.48.4",
-    "semistandard": "^14.2.0"
+    "jest": "^24.9.0",
+    "semistandard": "^14.2.0",
+    "ts-jest": "^24.2.0"
   },
   "dependencies": {
     "request": "^2.88.0",

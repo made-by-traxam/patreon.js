@@ -24,8 +24,8 @@ export class PatreonAPI {
    * 
    */
   async getCurrentUser(): Promise<User> {
-    const body = await this.buildRequest('/current_user');
-    return User.parse(body);
+    const body: any = await this.buildRequest('/current_user');
+    return User.parse(body.data);
   }
 
   /**

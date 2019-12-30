@@ -75,8 +75,7 @@ export class User {
    * Parses a ReST data API object into a User object.
    * @param source rest data API object.
    */
-  static parse(source: any): User {
-    var data: any = source.data;
+  static parse(data: any): User {
     var attributes: any = data.attributes;
     return {
       type: 'user',
