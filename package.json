@@ -4,7 +4,7 @@
   "description": "JS wrapper for the Patreon ReST API",
   "main": "index.js",
   "scripts": {
-    "test": "npx semistandard && npx jest"
+    "test": "npx semistandard & npx jest"
   },
   "repository": {
     "type": "git",
