@@ -1,3 +1,5 @@
+import { Campaign } from "./campaign";
+
 /**
  * A user data object.
  *
@@ -68,6 +70,10 @@ export class User {
    * Social network profiles linked to this user.
    */
   socialConnections: SocialConnections;
+  /**
+   * This user's patreon campaign.
+   */
+  campaign: Campaign;
 }
 
 /**
