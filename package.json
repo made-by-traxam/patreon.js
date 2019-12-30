@@ -23,5 +23,8 @@
   "homepage": "https://gitlab.com/traxam/patreon.js#readme",
   "devDependencies": {
     "semistandard": "^14.2.0"
+  },
+  "dependencies": {
+    "typescript": "^3.7.4"
   }
 }
