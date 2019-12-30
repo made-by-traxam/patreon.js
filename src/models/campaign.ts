@@ -67,7 +67,7 @@ export class Campaign {
    * Datetime that the creator first began the campaign creation process.
    * @see publishedAt
    */
-  createdAt: Date;
+  creationTime: Date;
   /**
    * Datetime that the creator most recently published (made publicly visible)
    * the campaign.
@@ -95,4 +95,37 @@ export class Campaign {
    */
   goals: unknown[];
   pledges: Pledge[];
+
+  static parse(data: any): Campaign {
+    var attributes: any = data.attributes;
+    return {
+      type: 'campaign',
+      id: data.id,
+      summary: attributes.summary,
+      creationName: attributes.creation_name,
+      payPerName: attributes.pay_per_name,
+      oneLiner: attributes.one_liner,
+      mainVideoEmbed: attributes.main_video_embed,
+      mainVideoUrl: attributes.main_video_url,
+      smallImageUrl: attributes.image_small_url,
+      imageUrl: attributes.image_url,
+      thanksVideoUrl: attributes.thanks_video_url,
+      thanksEmbed: attributes.thanks_embed,
+      thanksMessage: attributes.thanks_msg,
+      isMonthly: attributes.is_monthly,
+      isNSFW: attributes.is_nsfw,
+      creationTime: new Date(attributes.created_at),
+      publishedAt: new Date(attributes.published_at),
+      pledgeUrl: attributes.pledge_url,
+      pledgeSum: attributes.pledge_sum,
+      patronCount: attributes.patron_count,
+      creationCount: attributes.creation_count,
+      outstandingPaymentAmountCents:
+        attributes.outstanding_payment_amount_cents,
+      creator: null, //todo
+      goals: [], //todo
+      pledges: [], //todo
+      rewards: [], //todo
+    };
+  }
 }

@@ -1,5 +1,6 @@
 import * as request from 'request';
-import { User } from '.';
+import { User } from './models/user';
+import { Campaign } from './models/campaign';
 
 /**
  * Wrapper for the Patreon API.
@@ -21,18 +22,27 @@ export class PatreonAPI {
   }
 
   /**
-   * 
+   * Fetches the current user.
    */
   async getCurrentUser(): Promise<User> {
-    const body: any = await this.buildRequest('/current_user');
+    const body: any = await this.requestApiResource('/current_user');
     return User.parse(body.data);
+  }
+
+  /**
+   * Fetches the current user's campaigns.
+   */
+  async getCurrentUserCampaigns(): Promise<Campaign[]> {
+    const body: any = await this.requestApiResource('/current_user/campaigns');
+    const data: Array<any> = body.data;
+    return data.map((val, index, array) => Campaign.parse(val));
   }
 
   /**
    * Executes a request.
    * @param route API endpoint, must start with a `/`
    */
-  private buildRequest(route: string): Promise<object> {
+  private requestApiResource(route: string): Promise<object> {
     return new Promise<object>((resolve, reject) => {
       request({
         url: this.BASE_URL + route,
