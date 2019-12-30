@@ -49,7 +49,7 @@ export class User {
   /**
    * Datetime of this account's creation.
    */
-  created: Date;
+  creationTime: Date;
   /**
    * URL of this user's creator or patron profile.
    */
@@ -70,20 +70,38 @@ export class User {
    * Social network profiles linked to this user.
    */
   socialConnections: SocialConnections;
+
   /**
-   * This user's patreon campaign.
+   * Parses a ReST data API object into a User object.
+   * @param source rest data API object.
    */
-  campaign: Campaign;
+  static parse(data: any): User {
+    var attributes: any = data.attributes;
+    return {
+      type: 'user',
+      id: data.id,
+      email: attributes.email,
+      firstName: attributes.first_name,
+      lastName: attributes.last_name,
+      vanity: attributes.vanity,
+      about: attributes.about,
+      imageUrl: attributes.image_url,
+      thumbUrl: attributes.thumb_url,
+      creationTime: new Date(attributes.created),
+      url: attributes.url,
+      likeCount: attributes.like_count === undefined
+        ? null : attributes.like_count,
+      commentCount: attributes.comment_count === undefined
+        ? null : attributes.comment_count,
+      socialConnections: SocialConnections.parse(attributes),
+    }
+  }
 }
 
 /**
  * Social network profiles that are linked to a user.
  */
 export class SocialConnections {
-  /**
-   * The user who owns these profiles.
-   */
-  user: User;
   /**
    * TODO: purpose/content unknown
    */
@@ -100,4 +118,17 @@ export class SocialConnections {
    * TODO: purpose/content unknown
    */
   youtube?: string;
+
+  /**
+   * Parses social media links form user attributes.
+   * @param attributes the attributes child of a User data object.
+   */
+  static parse(attributes: any): SocialConnections {
+    return {
+      facebookId: attributes.facebook_id,
+      facebook: attributes.facebook,
+      twitter: attributes.twitter,
+      youtube: attributes.youtube,
+    }
+  }
 }
