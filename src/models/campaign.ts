@@ -1,6 +1,7 @@
 import { User } from "./user";
 import { Pledge } from "./pledge";
 import { PatreonAPI } from "../patreonApi";
+import { Page } from "../page";
 
 /**
  * A campaign data object.
@@ -158,9 +159,10 @@ export class Campaign {
   pledges: Pledge[];
 
   /**
-   * 
+   * Fetches pledges for this campaign.
+   * @see PatreonAPI.getCampaignPledges
    */
-  public getPledges(): Promise<Pledge[]> {
+  public getPledges(): Promise<Page<Pledge>> {
     return this.api.getCampaignPledges(this.id);
   }
 
