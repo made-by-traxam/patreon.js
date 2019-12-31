@@ -1,5 +1,7 @@
 import { User } from "./user";
 import { Pledge } from "./pledge";
+import { PatreonAPI } from "../patreonApi";
+import { Page } from "../page";
 
 /**
  * A campaign data object.
@@ -7,6 +9,66 @@ import { Pledge } from "./pledge";
  * @see https://docs.patreon.com/#campaign API documentation
  */
 export class Campaign {
+  constructor(api: PatreonAPI,
+    id: string,
+    summary: string,
+    creationName: string,
+    payPerName: string,
+    oneLiner: string,
+    mainVideoEmbed: string,
+    mainVideoUrl: string,
+    imageUrl: string,
+    smallImageUrl: string,
+    thanksVideoUrl: string,
+    thanksEmbed: string,
+    thanksMessage: string,
+    isMonthly: boolean,
+    isNSFW: boolean,
+    creationTime: Date,
+    publishedAt: Date,
+    pledgeUrl: string,
+    pledgeSum: number,
+    patronCount: number,
+    creationCount: number,
+    outstandingPaymentAmountCents: number,
+    creator: User,
+    rewards: unknown[],
+    goals: unknown[],
+    pledges: Pledge[]) {
+      this.api = api;
+      this.type = 'pledge';
+      this.id = id;
+      this.summary = summary;
+      this.creationName = creationName;
+      this.payPerName = payPerName;
+      this.oneLiner = oneLiner;
+      this.mainVideoEmbed = mainVideoEmbed;
+      this.mainVideoUrl = mainVideoUrl;
+      this.imageUrl = imageUrl;
+      this.smallImageUrl = smallImageUrl;
+      this.thanksVideoUrl = thanksVideoUrl;
+      this.thanksEmbed = thanksEmbed;
+      this.thanksMessage = thanksMessage;
+      this.isMonthly = isMonthly;
+      this.isNSFW = isNSFW;
+      this.creationTime = creationTime;
+      this.publishedAt = publishedAt;
+      this.pledgeUrl = pledgeUrl;
+      this.pledgeSum = pledgeSum;
+      this.patronCount = patronCount;
+      this.creationCount = creationCount;
+      this.outstandingPaymentAmountCents = outstandingPaymentAmountCents;
+      this.creator = creator;
+      this.rewards = rewards;
+      this.goals = goals;
+      this.pledges = pledges;
+    }
+
+    
+  /**
+   * The api class used to fetch this campaign.
+   */
+  api: PatreonAPI;
   /**
    * The type of Campaign objects is 'campaign'.
    */
@@ -96,36 +158,61 @@ export class Campaign {
   goals: unknown[];
   pledges: Pledge[];
 
-  static parse(data: any): Campaign {
+  /**
+   * Fetches pledges for this campaign.
+   * @see PatreonAPI.getCampaignPledges
+   */
+  public getPledges(): Promise<Page<Pledge>> {
+    return this.api.getCampaignPledges(this.id);
+  }
+
+  /**
+   * Fetches all pledges for this campaign. This request might take a long time
+   * if your campaign has a lot of pledges.
+   */
+  public async getAllPledges(): Promise<Pledge[]> {
+    var pledges: Pledge[] = [];
+    var currentPage: Page<Pledge> = await this.getPledges();
+    pledges.push(...currentPage.contents);
+    while (currentPage.hasNext()) {
+      currentPage = await currentPage.getNext();
+      pledges.push(...currentPage.contents);
+    }
+    return pledges;
+  }
+
+  /**
+   * Parses a ReST data API object into a Pledge object.
+   * @param source rest data API object.
+   */
+  static parse(data: any, api: PatreonAPI): Campaign {
     var attributes: any = data.attributes;
-    return {
-      type: 'campaign',
-      id: data.id,
-      summary: attributes.summary,
-      creationName: attributes.creation_name,
-      payPerName: attributes.pay_per_name,
-      oneLiner: attributes.one_liner,
-      mainVideoEmbed: attributes.main_video_embed,
-      mainVideoUrl: attributes.main_video_url,
-      smallImageUrl: attributes.image_small_url,
-      imageUrl: attributes.image_url,
-      thanksVideoUrl: attributes.thanks_video_url,
-      thanksEmbed: attributes.thanks_embed,
-      thanksMessage: attributes.thanks_msg,
-      isMonthly: attributes.is_monthly,
-      isNSFW: attributes.is_nsfw,
-      creationTime: new Date(attributes.created_at),
-      publishedAt: new Date(attributes.published_at),
-      pledgeUrl: attributes.pledge_url,
-      pledgeSum: attributes.pledge_sum,
-      patronCount: attributes.patron_count,
-      creationCount: attributes.creation_count,
-      outstandingPaymentAmountCents:
-        attributes.outstanding_payment_amount_cents,
-      creator: null, //todo
-      goals: [], //todo
-      pledges: [], //todo
-      rewards: [], //todo
-    };
+    return new Campaign(api,
+      data.id,
+      attributes.summary,
+      attributes.creation_name,
+      attributes.pay_per_name,
+      attributes.one_liner,
+      attributes.main_video_embed,
+      attributes.main_video_url,
+      attributes.image_url,
+      attributes.image_small_url,
+      attributes.thanks_video_url,
+      attributes.thanks_embed,
+      attributes.thanks_msg,
+      attributes.is_monthly,
+      attributes.is_nsfw,
+      new Date(attributes.created_at),
+      new Date(attributes.published_at),
+      attributes.pledge_url,
+      attributes.pledge_sum,
+      attributes.patron_count,
+      attributes.creation_count,
+      attributes.outstanding_payment_amount_cents,
+      null, //todo
+      [], //todo
+      [], //todo
+      [] //todo
+    );
   }
 }
