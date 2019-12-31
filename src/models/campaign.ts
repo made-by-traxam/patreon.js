@@ -167,6 +167,21 @@ export class Campaign {
   }
 
   /**
+   * Fetches all pledges for this campaign. This request might take a long time
+   * if your campaign has a lot of pledges.
+   */
+  public async getAllPledges(): Promise<Pledge[]> {
+    var pledges: Pledge[] = [];
+    var currentPage: Page<Pledge> = await this.getPledges();
+    pledges.push(...currentPage.contents);
+    while (currentPage.hasNext()) {
+      currentPage = await currentPage.getNext();
+      pledges.push(...currentPage.contents);
+    }
+    return pledges;
+  }
+
+  /**
    * Parses a ReST data API object into a Pledge object.
    * @param source rest data API object.
    */
