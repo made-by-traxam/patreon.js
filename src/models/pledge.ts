@@ -12,7 +12,7 @@ export class Pledge {
       declinedSince: Date,
       pledgeCapCents: number,
       patronPaysFees: boolean,
-      totalHistoricAmountCents: number,
+      totalHistoricalAmountCents: number,
       isPaused: boolean,
       hasShippingAddress: boolean,
       patron: User,
@@ -25,7 +25,7 @@ export class Pledge {
     this.declinedSince = declinedSince;
     this.pledgeCapCents = pledgeCapCents;
     this.patronPaysFees = patronPaysFees;
-    this.totalHistoricAmountCents = totalHistoricAmountCents;
+    this.totalHistoricalAmountCents = totalHistoricalAmountCents;
     this.isPaused = isPaused;
     this.hasShippingAddress = hasShippingAddress;
     this.patron = patron;
@@ -56,7 +56,7 @@ export class Pledge {
    * 
    * Is null if this value was not requested explicitly.
    */
-  totalHistoricAmountCents?: number;
+  totalHistoricalAmountCents?: number;
   /**
    * Is null if this value was not requested explicitly.
    */
@@ -92,7 +92,7 @@ export class Pledge {
       attributes.declined_since === null ? null : new Date(attributes.declined_since),
       attributes.pledge_cap_cents,
       attributes.patron_pays_fees,
-      attributes.total_historic_amount_cents,
+      attributes.total_historical_amount_cents,
       attributes.is_paused === undefined ? null : attributes.is_paused,
       attributes.has_shipping_address === undefined ? null : attributes.has_shipping_address,
       null, // todo
