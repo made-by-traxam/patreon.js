@@ -1,6 +1,7 @@
 import * as request from 'request';
 import { User } from './models/user';
 import { Campaign } from './models/campaign';
+import { Pledge } from './models/pledge';
 
 /**
  * Wrapper for the Patreon API.
@@ -36,6 +37,17 @@ export class PatreonAPI {
     const body: any = await this.requestApiResource('/current_user/campaigns');
     const data: Array<any> = body.data;
     return data.map((val, index, array) => Campaign.parse(val));
+  }
+
+  /**
+   * Fetches pledges for a given campaign.
+   * @param campaignId the id of the campaign to fetch pledges for.
+   */
+  async getCampaignPledges(campaignId: string): Promise<Pledge[]> {
+    const body: any =
+      await this.requestApiResource(`/campaigns/${campaignId}/pledges`);
+    const data: Array<any> = body.data;
+    return data.map(rawPledge => Pledge.parse(rawPledge));
   }
 
   /**
