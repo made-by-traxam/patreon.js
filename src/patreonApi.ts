@@ -36,7 +36,7 @@ export class PatreonAPI {
   async getCurrentUserCampaigns(): Promise<Campaign[]> {
     const body: any = await this.requestApiResource('/current_user/campaigns');
     const data: Array<any> = body.data;
-    return data.map((val, index, array) => Campaign.parse(val));
+    return data.map((val, index, array) => Campaign.parse(val, this));
   }
 
   /**
