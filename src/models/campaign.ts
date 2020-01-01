@@ -9,62 +9,6 @@ import { Page } from "../page";
  * @see https://docs.patreon.com/#campaign API documentation
  */
 export class Campaign {
-  constructor(api: PatreonAPI,
-    id: string,
-    summary: string,
-    creationName: string,
-    payPerName: string,
-    oneLiner: string,
-    mainVideoEmbed: string,
-    mainVideoUrl: string,
-    imageUrl: string,
-    smallImageUrl: string,
-    thanksVideoUrl: string,
-    thanksEmbed: string,
-    thanksMessage: string,
-    isMonthly: boolean,
-    isNSFW: boolean,
-    creationTime: Date,
-    publishedAt: Date,
-    pledgeUrl: string,
-    pledgeSum: number,
-    patronCount: number,
-    creationCount: number,
-    outstandingPaymentAmountCents: number,
-    creator: User,
-    rewards: unknown[],
-    goals: unknown[],
-    pledges: Pledge[]) {
-      this.api = api;
-      this.type = 'pledge';
-      this.id = id;
-      this.summary = summary;
-      this.creationName = creationName;
-      this.payPerName = payPerName;
-      this.oneLiner = oneLiner;
-      this.mainVideoEmbed = mainVideoEmbed;
-      this.mainVideoUrl = mainVideoUrl;
-      this.imageUrl = imageUrl;
-      this.smallImageUrl = smallImageUrl;
-      this.thanksVideoUrl = thanksVideoUrl;
-      this.thanksEmbed = thanksEmbed;
-      this.thanksMessage = thanksMessage;
-      this.isMonthly = isMonthly;
-      this.isNSFW = isNSFW;
-      this.creationTime = creationTime;
-      this.publishedAt = publishedAt;
-      this.pledgeUrl = pledgeUrl;
-      this.pledgeSum = pledgeSum;
-      this.patronCount = patronCount;
-      this.creationCount = creationCount;
-      this.outstandingPaymentAmountCents = outstandingPaymentAmountCents;
-      this.creator = creator;
-      this.rewards = rewards;
-      this.goals = goals;
-      this.pledges = pledges;
-    }
-
-    
   /**
    * The api class used to fetch this campaign.
    */
@@ -156,7 +100,6 @@ export class Campaign {
    * The campaign's goals
    */
   goals: unknown[];
-  pledges: Pledge[];
 
   /**
    * Fetches pledges for this campaign.
@@ -186,33 +129,32 @@ export class Campaign {
    * @param source rest data API object.
    */
   static parse(data: any, api: PatreonAPI): Campaign {
-    var attributes: any = data.attributes;
-    return new Campaign(api,
-      data.id,
-      attributes.summary,
-      attributes.creation_name,
-      attributes.pay_per_name,
-      attributes.one_liner,
-      attributes.main_video_embed,
-      attributes.main_video_url,
-      attributes.image_url,
-      attributes.image_small_url,
-      attributes.thanks_video_url,
-      attributes.thanks_embed,
-      attributes.thanks_msg,
-      attributes.is_monthly,
-      attributes.is_nsfw,
-      new Date(attributes.created_at),
-      new Date(attributes.published_at),
-      attributes.pledge_url,
-      attributes.pledge_sum,
-      attributes.patron_count,
-      attributes.creation_count,
-      attributes.outstanding_payment_amount_cents,
-      null, //todo
-      [], //todo
-      [], //todo
-      [] //todo
-    );
+    const att: any = data.attributes;
+    const campaign = new Campaign();
+    Object.assign(campaign, {
+      api: api,
+      id: data.id,
+      summary: att.summary,
+      creationName: att.creation_name,
+      payPerName: att.pay_per_name,
+      oneLiner: att.one_liner,
+      mainVideoEmbed: att.main_video_embed,
+      mainVideoUrl: att.main_video_url,
+      imageUrl: att.image_url,
+      smallImageUrl: att.image_small_url,
+      thanksVideoUrl: att.thanks_video_url,
+      thanksEmbed: att.thanks_embed,
+      thanksMessage: att.thanks_msg,
+      isMonthly: att.is_monthly,
+      isNSFW: att.is_nsfw,
+      createdAt: new Date(att.created_at),
+      publishedAt: new Date(att.published_at),
+      pledgeUrl: att.pledge_url,
+      pledgeSum: att.pledge_sum,
+      patronCount: att.patron_count,
+      creationCount: att.creation_count,
+      outstandingPaymentAmountCents: att.outstanding_payment_amount_cents,
+    });
+    return campaign;
   }
 }
