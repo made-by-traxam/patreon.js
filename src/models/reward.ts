@@ -82,4 +82,37 @@ export class Reward {
    * Datetime this reward was unpublished, while applicable. Can be null.
    */
   unpublishedAt: Date;
+
+  /**
+   * Parses a ReST data API object into a Reward object.
+   * @param source ReST data API object.
+   * @param api the api instance.
+   */
+  static parse(data: any, api: PatreonAPI): Reward {
+    const att: any = data.attributes;
+    const reward = new Reward();
+    Object.assign(reward, {
+      api: api,
+      id: data.id,
+      amount: att.amount_cents,
+      userLimit: att.user_limit,
+      remaining: att.remaining,
+      description: att.description,
+      requiresShipping: att.requires_shipping,
+      createdAt: new Date(att.created_at),
+      url: att.url,
+      patronCount: att.patron_count,
+      postCount: att.post_count,
+      discordRoleIds: att.discord_role_ids,
+      title: att.title,
+      imageUrl: att.image_url,
+      editedAt: new Date(att.edited_at),
+      published: att.published,
+      publishedAt: att.published_at === null ?
+        null : new Date(att.published_at),
+      unpublishedAt: att.unpublished_at === null ?
+        null : new Date(att.unpublished_at)
+    })
+    return reward;
+  }
 }
