@@ -48,4 +48,24 @@ export class Goal {
    * When this goal was reached. Null if the goal was not reached yet.
    */
   reachedAt?: Date;
+
+  /**
+   * Parses a ReST data API object into a Goal object.
+   * @param source rest data API object.
+   * @param api the api instance.
+   */
+  static parse(data: any, api: PatreonAPI): Goal {
+    const att: any = data.attributes;
+    var goal: Goal = new Goal();
+    goal.api = api;
+    goal.id = data.id;
+    goal.title = att.title;
+    goal.description = att.description;
+    goal.amount = att.amount_cents;
+    goal.currency = att.currency;
+    goal.progress = att.completed_percentage;
+    goal.createdAt = new Date(att.created_at);
+    goal.reachedAt = att.reached_at === null ? null : new Date(att.reached_at);
+    return goal;
+  }
 }
