@@ -1,19 +1,13 @@
 import { User } from "./user";
+import { PatreonObject } from "../patreonObject";
+import { DataStore } from "../dataStore";
 
 /**
  * A pledge data object.
  * 
  * @see https://docs.patreon.com/#pledge API documentation
  */
-export class Pledge {
-  /**
-   * The type of Pledge objects is `pledge`. 
-   */
-  readonly type: string = 'pledge';
-  /**
-   * Identifying number of this pledge.
-   */
-  id: string;
+export class Pledge extends PatreonObject {
   /**
    * The amount of this pledge in cents.
    */
@@ -62,31 +56,26 @@ export class Pledge {
     return this.declinedSince !== null;
   }
 
-  /**
-   * Parses a ReST data API object into a Pledge object.
-   * @param source rest data API object.
-   */
-  static parse(data: any): Pledge {
-    var att = data.attributes;
+  parse(data: {attributes: any, relationships: any},
+      dataStore: DataStore): void {
+    const att = data.attributes;
+    const rel = data.relationships;
     
-    const pledge = new Pledge();
-    pledge.id = data.id;
-    pledge.amount = att.amount_cents;
-    pledge.createdAt = new Date(att.created_at);
-    pledge.declinedSince = att.declined_since === null ?
+    this.amount = att.amount_cents;
+    this.createdAt = new Date(att.created_at);
+    this.declinedSince = att.declined_since === null ?
       null : new Date(att.declined_since);
-    pledge.pledgeCap = att.pledge_cap_cents;
-    pledge.patronPaysFees = att.patron_pays_fees;
-    pledge.totalHistoricalAmount = att.total_historical_amount_cents;
-    pledge.isPaused = att.is_paused === undefined ?
+    this.pledgeCap = att.pledge_cap_cents;
+    this.patronPaysFees = att.patron_pays_fees;
+    this.totalHistoricalAmount = att.total_historical_amount_cents;
+    this.isPaused = att.is_paused === undefined ?
       null : att.is_paused,
-    pledge.hasShippingAddress = att.has_shipping_address === undefined ?
+    this.hasShippingAddress = att.has_shipping_address === undefined ?
       null : att.has_shipping_address;
-    pledge.patron = null; // todo
-    pledge.reward = null; // todo
-    pledge.creator = null; //todo
-    pledge.address = null; // todo
     
-    return pledge;
+    this.patron = dataStore.getUser(rel.patron);
+    this.reward = dataStore.getReward(rel.reward);
+    this.creator = dataStore.getUser(rel.creator);
+    this.address = null; // todo
   }
 }

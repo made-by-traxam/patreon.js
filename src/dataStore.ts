@@ -3,6 +3,7 @@ import { Campaign } from "./models/campaign";
 import { User } from "./models/user";
 import { Reward } from "./models/reward";
 import { Goal } from "./models/goal";
+import { PatreonObject } from "./patreonObject";
 
 /**
  * A data model only containing a reference.
@@ -13,15 +14,26 @@ class Reference {
   }
 }
 
+class ReferenceCollection {
+  data: [{
+    id: string;
+  }]
+}
+
 /**
  * A data store managing all included data in a Patreon API request.
  */
 export class DataStore {
+  primaryObject: PatreonObject | PatreonObject[];
   users: User[];
   campaigns: Campaign[];
   pledges: Pledge[];
   rewards: Reward[];
   goals: Goal[];
+
+  constructor(object: any) {
+
+  }
 
   /**
    * Gets a referenced user from included data.
@@ -47,12 +59,24 @@ export class DataStore {
     return this.pledges.find(pledge => pledge.id === ref.data.id);
   }
 
+  private _getReward(id: string): Reward {
+    return this.rewards.find(reward => reward.id === id);
+  }
+
   /**
    * Gets a referenced reward.
    * @param ref a reward reference.
    */
   getReward(ref: Reference): Reward {
-    return this.rewards.find(reward => reward.id === ref.data.id);
+    return this._getReward(ref.data.id);
+  }
+
+  getRewards(refs: ReferenceCollection): Reward[] {
+    return refs.data.map(ref => this._getReward(ref.id));
+  }
+
+  private _getGoal(id: string): Goal {
+    return this.goals.find(goal => goal.id === id);
   }
 
   /**
@@ -60,6 +84,14 @@ export class DataStore {
    * @param ref a goal reference.
    */
   getGoal(ref: Reference): Goal {
-    return this.goals.find(goal => goal.id === ref.data.id);
+    return this._getGoal(ref.data.id);
+  }
+
+  /**
+   * Gets a bunch of referenced goals.
+   * @param refs a bunch of goal references.
+   */
+  getGoals(refs: ReferenceCollection): Goal[] {
+    return refs.data.map(ref => this._getGoal(ref.id));
   }
 }
