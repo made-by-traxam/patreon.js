@@ -73,7 +73,7 @@ export class Campaign {
    * Datetime that the creator first began the campaign creation process.
    * @see publishedAt
    */
-  creationTime: Date;
+  createdAt: Date;
   /**
    * Datetime that the creator most recently published (made publicly visible)
    * the campaign.
@@ -131,30 +131,32 @@ export class Campaign {
   static parse(data: any, api: PatreonAPI): Campaign {
     const att: any = data.attributes;
     const campaign = new Campaign();
-    Object.assign(campaign, {
-      api: api,
-      id: data.id,
-      summary: att.summary,
-      creationName: att.creation_name,
-      payPerName: att.pay_per_name,
-      oneLiner: att.one_liner,
-      mainVideoEmbed: att.main_video_embed,
-      mainVideoUrl: att.main_video_url,
-      imageUrl: att.image_url,
-      smallImageUrl: att.image_small_url,
-      thanksVideoUrl: att.thanks_video_url,
-      thanksEmbed: att.thanks_embed,
-      thanksMessage: att.thanks_msg,
-      isMonthly: att.is_monthly,
-      isNSFW: att.is_nsfw,
-      createdAt: new Date(att.created_at),
-      publishedAt: new Date(att.published_at),
-      pledgeUrl: att.pledge_url,
-      pledgeSum: att.pledge_sum,
-      patronCount: att.patron_count,
-      creationCount: att.creation_count,
-      outstandingPaymentAmountCents: att.outstanding_payment_amount_cents,
-    });
+    campaign.api = api;
+    campaign.id = data.id;
+    campaign.summary = att.summary;
+    campaign.creationName = att.creation_name;
+    campaign.payPerName = att.pay_per_name;
+    campaign.oneLiner = att.one_liner;
+    campaign.mainVideoEmbed = att.main_video_embed;
+    campaign.mainVideoUrl = att.main_video_url;
+    campaign.imageUrl = att.image_url;
+    campaign.smallImageUrl = att.image_small_url;
+    campaign.thanksVideoUrl = att.thanks_video_url;
+    campaign.thanksEmbed = att.thanks_embed;
+    campaign.thanksMessage = att.thanks_msg;
+    campaign.isMonthly = att.is_monthly;
+    campaign.isNSFW = att.is_nsfw;
+    campaign.createdAt = new Date(att.created_at);
+    campaign.publishedAt = new Date(att.published_at);
+    campaign.pledgeUrl = att.pledge_url;
+    campaign.pledgeSum = att.pledge_sum;
+    campaign.patronCount = att.patron_count;
+    campaign.creationCount = att.creation_count;
+    campaign.outstandingPaymentAmountCents = att.outstanding_payment_amount_cents;
+    campaign.creator = null; // todo
+    campaign.rewards = []; // todo
+    campaign.goals = []; // todo
+
     return campaign;
   }
 }

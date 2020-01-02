@@ -36,32 +36,31 @@ test('parse campaign', () => {
       pledges: []
     }
   };
-  const expectedResult: Campaign = new Campaign(null,
-    '0000000',
-    'this is a summary',
-    'Documentation',
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    false,
-    false,
-    new Date('2017-10-20T21:39:01+00:00'),
-    new Date('2017-10-20T21:39:01+00:00'),
-    '/bePatron?c=0000000',
-    0,
-    0,
-    1,
-    0,
-    null,
-    [],
-    [],
-    [],
-  );
+  const expectedResult: Campaign = new Campaign();
+  expectedResult.api = null;
+  expectedResult.id = '0000000';
+  expectedResult.summary = 'this is a summary';
+  expectedResult.creationName = 'Documentation';
+  expectedResult.payPerName = null;
+  expectedResult.oneLiner = null;
+  expectedResult.mainVideoEmbed = null;
+  expectedResult.mainVideoUrl = null;
+  expectedResult.imageUrl = null;
+  expectedResult.smallImageUrl = null;
+  expectedResult.thanksVideoUrl = null;
+  expectedResult.thanksEmbed = null;
+  expectedResult.thanksMessage = null;
+  expectedResult.isMonthly = false;
+  expectedResult.isNSFW = false;
+  expectedResult.createdAt = new Date('2017-10-20T21:39:01+00:00');
+  expectedResult.publishedAt = new Date('2017-10-20T21:39:01+00:00');
+  expectedResult.pledgeUrl = '/bePatron?c=0000000';
+  expectedResult.pledgeSum = 0;
+  expectedResult.patronCount = 0;
+  expectedResult.creationCount = 1;
+  expectedResult.outstandingPaymentAmountCents = 0;
+  expectedResult.creator = null;
+  expectedResult.rewards = [];
+  expectedResult.goals = [];
   expect(Campaign.parse(input, null)).toEqual<Campaign>(expectedResult);
 });
