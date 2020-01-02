@@ -23,20 +23,19 @@ test('parse pledge', () => {
       address: null
     }
   };
-   const expectedResult: Pledge = new Pledge(
-     '2745627',
-     100,
-     new Date('2016-07-25T20:59:52+00:00'),
-     null,
-     null,
-     false,
-     300,
-     false,
-     false,
-     null,
-     null,
-     null,
-     null
-   );
-   expect(Pledge.parse(input)).toEqual<Pledge>(expectedResult);
+  const expectedResult: Pledge = new Pledge();
+  expectedResult.id = '2745627';
+  expectedResult.amount = 100;
+  expectedResult.createdAt = new Date('2016-07-25T20:59:52+00:00');
+  expectedResult.declinedSince = null;
+  expectedResult.pledgeCap = null;
+  expectedResult.patronPaysFees = false;
+  expectedResult.totalHistoricalAmount = 300;
+  expectedResult.isPaused = false;
+  expectedResult.hasShippingAddress = false;
+  expectedResult.patron = null;
+  expectedResult.reward = null;
+  expectedResult.creator = null;
+  expectedResult.address = null;
+  expect(Pledge.parse(input)).toEqual<Pledge>(expectedResult);
 });
