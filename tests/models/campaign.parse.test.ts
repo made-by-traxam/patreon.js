@@ -1,6 +1,7 @@
 import { Campaign } from '../../src/models/campaign';
+import { DataStore } from '../../src/dataStore';
 
-test('parse campaign', () => {
+test('parse campaign with empty relationships', () => {
   // sample input with structure from https://docs.patreon.com/#campaign and
   // data from
   // https://docs.patreon.com/#fetch-a-creator-profile-and-campaign-info
@@ -30,15 +31,13 @@ test('parse campaign', () => {
       outstanding_payment_amount_cents: 0
     },
     relationships: {
-      creator: null,
-      rewards: [],
-      goals: [],
-      pledges: []
+      creator: {data: {id: '0', type: 'user'}}, // invalid reference
+      rewards: {data: []}, // empty reference collection
+      goals: {data: []}, // empty reference collection
+      pledges: {data: []} // empty reference collection
     }
   };
-  const expectedResult: Campaign = new Campaign();
-  expectedResult.api = null;
-  expectedResult.id = '0000000';
+  const expectedResult: Campaign = new Campaign(null, '0000000');
   expectedResult.summary = 'this is a summary';
   expectedResult.creationName = 'Documentation';
   expectedResult.payPerName = null;
@@ -59,8 +58,12 @@ test('parse campaign', () => {
   expectedResult.patronCount = 0;
   expectedResult.creationCount = 1;
   expectedResult.outstandingPaymentAmountCents = 0;
-  expectedResult.creator = null;
+  expectedResult.creator = undefined; // user will not be found
   expectedResult.rewards = [];
   expectedResult.goals = [];
-  expect(Campaign.parse(input, null)).toEqual<Campaign>(expectedResult);
+
+  const dataStore = new DataStore(null);
+  const campaign = new Campaign(null, '0000000');
+  campaign.parse(input, dataStore);
+  expect(campaign).toEqual<Campaign>(expectedResult);
 });
