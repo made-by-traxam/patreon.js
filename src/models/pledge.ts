@@ -80,7 +80,8 @@ export class Pledge extends PatreonObject {
       null : new Date(att.declined_since);
     this.pledgeCap = att.pledge_cap_cents;
     this.patronPaysFees = att.patron_pays_fees;
-    this.totalHistoricalAmount = att.total_historical_amount_cents;
+    this.totalHistoricalAmount = att.total_historical_amount_cents === undefined
+      ? null : att.total_historical_amount_cents;
     this.isPaused = att.is_paused === undefined ?
       null : att.is_paused,
     this.hasShippingAddress = att.has_shipping_address === undefined ?
