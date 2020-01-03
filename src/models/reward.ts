@@ -1,5 +1,6 @@
 import { PatreonObject } from '../patreonObject';
 import { DataStore } from '../dataStore';
+import { PatreonAPI } from '../patreonApi';
 
 /**
  * A reward data object.
@@ -71,6 +72,16 @@ export class Reward extends PatreonObject {
    * Datetime this reward was unpublished, while applicable. Can be null.
    */
   unpublishedAt: Date;
+
+  /**
+   * Constructs a new reward object.
+   * @param api the api instance used for previous and further interaction with
+   *            the Patreon API.
+   * @param id identifying number of this object.
+   */
+  constructor(api: PatreonAPI, id: string) {
+    super(api, 'reward', id);
+  }
 
   parse(data: {attributes: any, relationships: any},
       dataStore: DataStore): void {

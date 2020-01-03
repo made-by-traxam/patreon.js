@@ -1,6 +1,7 @@
 import { User } from "./user";
 import { PatreonObject } from "../patreonObject";
 import { DataStore } from "../dataStore";
+import { PatreonAPI } from "../patreonApi";
 import { Reward } from "./reward";
 import { Address } from "./address";
 
@@ -49,6 +50,16 @@ export class Pledge extends PatreonObject {
   reward: Reward;
   creator: User;
   address: Address;
+
+  /**
+   * Constructs a new pledge object.
+   * @param api the api instance used for previous and further interaction with
+   *            the Patreon API.
+   * @param id identifying number of this object.
+   */
+  constructor(api: PatreonAPI, id: string) {
+    super(api, 'pledge', id);
+  }
 
   /**
    * Checks if the pledge is invalid.

@@ -1,6 +1,6 @@
-import { Campaign } from "./campaign";
 import { PatreonObject } from "../patreonObject";
 import { DataStore } from "../dataStore";
+import { PatreonAPI } from "../patreonApi";
 
 /**
  * A user data object.
@@ -64,6 +64,16 @@ export class User extends PatreonObject {
    * Social network profiles linked to this user.
    */
   socialConnections: SocialConnections;
+
+  /**
+   * Constructs a new user object.
+   * @param api the api instance used for previous and further interaction with
+   *            the Patreon API.
+   * @param id identifying number of this object.
+   */
+  constructor(api: PatreonAPI, id: string) {
+    super(api, 'user', id);
+  }
 
   parse(data: {attributes: any, relationships: any},
       dataStore: DataStore): void {
