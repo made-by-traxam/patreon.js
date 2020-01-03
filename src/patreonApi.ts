@@ -3,6 +3,7 @@ import { User } from './models/user';
 import { Campaign } from './models/campaign';
 import { Pledge } from './models/pledge';
 import { Page } from './page';
+import { DataStore } from './dataStore';
 
 /**
  * Wrapper for the Patreon API.
@@ -28,7 +29,7 @@ export class PatreonAPI {
    */
   async getCurrentUser(): Promise<User> {
     const body: any = await this.requestApiResource('/current_user');
-    return User.parse(body.data);
+    return <User> this._parseResponse(body);
   }
 
   /**
@@ -37,7 +38,7 @@ export class PatreonAPI {
   async getCurrentUserCampaigns(): Promise<Campaign[]> {
     const body: any = await this.requestApiResource('/current_user/campaigns');
     const data: Array<any> = body.data;
-    return data.map((val, index, array) => Campaign.parse(val, this));
+    return <Campaign[]> this._parseResponse(body);
   }
 
   /**
@@ -52,7 +53,7 @@ export class PatreonAPI {
     const api = this;
     const body: any = await this._requestApiResourceFullyQualified(url);
     const data: Array<any> = body.data;
-    const pledges: Pledge[] = data.map(rawPledge => Pledge.parse(rawPledge));
+    const pledges = <Pledge[]> this._parseResponse(body);
     const nextUrl: string = body.links.next;
     return {
       contents: pledges,
@@ -88,5 +89,11 @@ export class PatreonAPI {
         }
       });
     });
+  }
+
+  private _parseResponse(response: any) {
+    const dataStore = new DataStore(this);
+    dataStore.parseResponse(response);
+    return dataStore.primaryObject;
   }
 }

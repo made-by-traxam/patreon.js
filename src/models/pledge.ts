@@ -1,62 +1,43 @@
 import { User } from "./user";
+import { PatreonObject } from "../patreonObject";
+import { DataStore } from "../dataStore";
+import { PatreonAPI } from "../patreonApi";
+import { Reward } from "./reward";
+import { Address } from "./address";
+import { RawPatreonObject } from "../rawPatreonObject";
 
 /**
  * A pledge data object.
  * 
  * @see https://docs.patreon.com/#pledge API documentation
  */
-export class Pledge {
-  constructor(id: string,
-      amountCents: number,
-      creationTime: Date,
-      declinedSince: Date,
-      pledgeCapCents: number,
-      patronPaysFees: boolean,
-      totalHistoricalAmountCents: number,
-      isPaused: boolean,
-      hasShippingAddress: boolean,
-      patron: User,
-      reward: unknown,
-      creator: User,
-      address: unknown) {
-    this.id = id;
-    this.amountCents = amountCents;
-    this.creationTime = creationTime;
-    this.declinedSince = declinedSince;
-    this.pledgeCapCents = pledgeCapCents;
-    this.patronPaysFees = patronPaysFees;
-    this.totalHistoricalAmountCents = totalHistoricalAmountCents;
-    this.isPaused = isPaused;
-    this.hasShippingAddress = hasShippingAddress;
-    this.patron = patron;
-    this.reward = reward;
-    this.creator = creator;
-    this.address = address;
-  }
+export class Pledge extends PatreonObject {
   /**
-   * The type of Pledge objects is `pledge`. 
+   * The amount of this pledge in cents.
    */
-  readonly type: string = 'pledge';
+  amount: number;
   /**
-   * Identifying number of this pledge.
+   * Datetime this pledge was created.
    */
-  id: string;
-  amountCents: number;
-  creationTime: Date;
+  createdAt: Date;
   /**
    * Indicates the date of the most recent payment if it failed, or `null` if
    * the most recent payment succeeded. A pledge with a non-null declined_since
    * should be treated as invalid.
    */
   declinedSince?: Date;
-  pledgeCapCents: number;
+  /**
+   * Pledge cap in cents.
+   */
+  pledgeCap: number;
   patronPaysFees: boolean;
   /**
-   * Indicates the lifetime value this patron has paid to the campaign.
+   * Indicates the lifetime value this patron has paid to the campaign,
+   * in cents.
    * 
    * Is null if this value was not requested explicitly.
    */
-  totalHistoricalAmountCents?: number;
+  totalHistoricalAmount?: number;
   /**
    * Is null if this value was not requested explicitly.
    */
@@ -67,9 +48,19 @@ export class Pledge {
   hasShippingAddress?: boolean;
 
   patron: User;
-  reward: unknown;
+  reward: Reward;
   creator: User;
-  address: unknown;
+  address: Address;
+
+  /**
+   * Constructs a new pledge object.
+   * @param api the api instance used for previous and further interaction with
+   *            the Patreon API.
+   * @param id identifying number of this object.
+   */
+  constructor(api: PatreonAPI, id: string) {
+    super(api, 'pledge', id);
+  }
 
   /**
    * Checks if the pledge is invalid.
@@ -79,26 +70,26 @@ export class Pledge {
     return this.declinedSince !== null;
   }
 
-  /**
-   * Parses a ReST data API object into a Pledge object.
-   * @param source rest data API object.
-   */
-  static parse(data: any): Pledge {
-    var attributes = data.attributes;
-    return new Pledge(
-      data.id,
-      attributes.amount_cents,
-      new Date(attributes.created_at),
-      attributes.declined_since === null ? null : new Date(attributes.declined_since),
-      attributes.pledge_cap_cents,
-      attributes.patron_pays_fees,
-      attributes.total_historical_amount_cents,
-      attributes.is_paused === undefined ? null : attributes.is_paused,
-      attributes.has_shipping_address === undefined ? null : attributes.has_shipping_address,
-      null, // todo
-      null, // todo
-      null, //todo
-      null // todo
-    );
+  parse(data: RawPatreonObject, dataStore: DataStore): void {
+    const att = data.attributes;
+    const rel = data.relationships;
+    
+    this.amount = att.amount_cents;
+    this.createdAt = new Date(att.created_at);
+    this.declinedSince = att.declined_since === null ?
+      null : new Date(att.declined_since);
+    this.pledgeCap = att.pledge_cap_cents;
+    this.patronPaysFees = att.patron_pays_fees;
+    this.totalHistoricalAmount = att.total_historical_amount_cents === undefined
+      ? null : att.total_historical_amount_cents;
+    this.isPaused = att.is_paused === undefined ?
+      null : att.is_paused,
+    this.hasShippingAddress = att.has_shipping_address === undefined ?
+      null : att.has_shipping_address;
+    
+    this.patron = dataStore.getUser(rel.patron);
+    this.reward = dataStore.getReward(rel.reward);
+    this.creator = dataStore.getUser(rel.creator);
+    this.address = dataStore.getAddress(rel.address);
   }
 }

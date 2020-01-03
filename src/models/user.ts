@@ -1,19 +1,14 @@
-import { Campaign } from "./campaign";
+import { PatreonObject } from "../patreonObject";
+import { DataStore } from "../dataStore";
+import { PatreonAPI } from "../patreonApi";
+import { RawPatreonObject } from "../rawPatreonObject";
 
 /**
  * A user data object.
  *
  * @see https://docs.patreon.com/#user API documentation
  */
-export class User {
-  /**
-   * The type of User objects is 'user'.
-   */
-  readonly type: string = 'user';
-  /**
-   * Identifying number of this user.
-   */
-  id: string;
+export class User extends PatreonObject {
   /**
    * Email address of this user.
    */
@@ -72,29 +67,32 @@ export class User {
   socialConnections: SocialConnections;
 
   /**
-   * Parses a ReST data API object into a User object.
-   * @param source rest data API object.
+   * Constructs a new user object.
+   * @param api the api instance used for previous and further interaction with
+   *            the Patreon API.
+   * @param id identifying number of this object.
    */
-  static parse(data: any): User {
-    var attributes: any = data.attributes;
-    return {
-      type: 'user',
-      id: data.id,
-      email: attributes.email,
-      firstName: attributes.first_name,
-      lastName: attributes.last_name,
-      vanity: attributes.vanity,
-      about: attributes.about,
-      imageUrl: attributes.image_url,
-      thumbUrl: attributes.thumb_url,
-      creationTime: new Date(attributes.created),
-      url: attributes.url,
-      likeCount: attributes.like_count === undefined
-        ? null : attributes.like_count,
-      commentCount: attributes.comment_count === undefined
-        ? null : attributes.comment_count,
-      socialConnections: SocialConnections.parse(attributes),
-    }
+  constructor(api: PatreonAPI, id: string) {
+    super(api, 'user', id);
+  }
+
+  parse(data: RawPatreonObject, dataStore: DataStore): void {
+    const att = data.attributes;
+
+    this.email = att.email;
+    this.firstName = att.first_name;
+    this.lastName = att.last_name;
+    this.vanity = att.vanity;
+    this.about = att.about;
+    this.imageUrl = att.image_url;
+    this.thumbUrl = att.thumb_url;
+    this.creationTime = new Date(att.created);
+    this.url = att.url;
+    this.likeCount = att.like_count === undefined
+      ? null : att.like_count;
+    this.commentCount = att.comment_count === undefined
+      ? null : att.comment_count;
+    this.socialConnections = SocialConnections.parse(att);
   }
 }
 

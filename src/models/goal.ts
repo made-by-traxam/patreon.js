@@ -1,21 +1,12 @@
 import { PatreonAPI } from "../patreonApi";
+import { PatreonObject } from "../patreonObject";
+import { DataStore } from "../dataStore";
+import { RawPatreonObject } from "../rawPatreonObject";
 
 /**
  * A goal data object.
  */
-export class Goal {
-  /**
-   * The api class used to fetch this campaign.
-   */
-  api: PatreonAPI;
-  /**
-   * The type of a Goal object is `goal`.
-   */
-  readonly type: string = 'goal';
-  /**
-   * Identifying number of this Goal.
-   */
-  id: string;
+export class Goal extends PatreonObject {
   /**
    * Title for this Goal.
    */
@@ -50,22 +41,24 @@ export class Goal {
   reachedAt?: Date;
 
   /**
-   * Parses a ReST data API object into a Goal object.
-   * @param source rest data API object.
-   * @param api the api instance.
+   * Constructs a new goal object.
+   * @param api the api instance used for previous and further interaction with
+   *            the Patreon API.
+   * @param id identifying number of this object.
    */
-  static parse(data: any, api: PatreonAPI): Goal {
-    const att: any = data.attributes;
-    var goal: Goal = new Goal();
-    goal.api = api;
-    goal.id = data.id;
-    goal.title = att.title;
-    goal.description = att.description;
-    goal.amount = att.amount_cents;
-    goal.currency = att.currency;
-    goal.progress = att.completed_percentage;
-    goal.createdAt = new Date(att.created_at);
-    goal.reachedAt = att.reached_at === null ? null : new Date(att.reached_at);
-    return goal;
+  constructor(api: PatreonAPI, id: string) {
+    super(api, 'goal', id);
+  }
+
+  parse(data: RawPatreonObject, dataStore: DataStore): void {
+    const att = data.attributes;
+
+    this.title = att.title;
+    this.description = att.description;
+    this.amount = att.amount_cents;
+    this.currency = att.currency;
+    this.progress = att.completed_percentage;
+    this.createdAt = new Date(att.created_at);
+    this.reachedAt = att.reached_at === null ? null : new Date(att.reached_at);
   }
 }

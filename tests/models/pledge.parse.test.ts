@@ -1,6 +1,7 @@
 import { Pledge } from '../../src/models/pledge';
+import { DataStore } from '../../src/dataStore';
 
-test('parse pledge', () => {
+test('parse pledge with empty relationships', () => {
   // sample input with structure from https://docs.patreon.com/#pledge and data
   // from https://docs.patreon.com/#paging-through-a-list-of-pledges
    const input = {
@@ -17,26 +18,28 @@ test('parse pledge', () => {
       has_shipping_address: false
     },
     relationships: {
-      patron: null,
-      reward: null,
-      creator: null,
-      address: null
+      patron: {data: {id: null, type: 'user'}}, // null-reference
+      reward: {data: {id: null, type: 'reward'}}, // null-reference
+      creator: {data: {id: null, type: 'user'}}, // null-reference
+      address: {data: {id: null, type: 'address'}} // null-reference
     }
   };
-   const expectedResult: Pledge = new Pledge(
-     '2745627',
-     100,
-     new Date('2016-07-25T20:59:52+00:00'),
-     null,
-     null,
-     false,
-     300,
-     false,
-     false,
-     null,
-     null,
-     null,
-     null
-   );
-   expect(Pledge.parse(input)).toEqual<Pledge>(expectedResult);
+  const expectedResult: Pledge = new Pledge(null, '2745627');
+  expectedResult.amount = 100;
+  expectedResult.createdAt = new Date('2016-07-25T20:59:52+00:00');
+  expectedResult.declinedSince = null;
+  expectedResult.pledgeCap = null;
+  expectedResult.patronPaysFees = false;
+  expectedResult.totalHistoricalAmount = 300;
+  expectedResult.isPaused = false;
+  expectedResult.hasShippingAddress = false;
+  expectedResult.patron = undefined;
+  expectedResult.reward = undefined;
+  expectedResult.creator = undefined;
+  expectedResult.address = undefined;
+
+  const dataStore = new DataStore(null);
+  const pledge = new Pledge(null, '2745627');
+  pledge.parse(input, dataStore);
+  expect(pledge).toEqual<Pledge>(expectedResult);
 });

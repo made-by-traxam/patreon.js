@@ -1,21 +1,12 @@
+import { PatreonObject } from '../patreonObject';
+import { DataStore } from '../dataStore';
 import { PatreonAPI } from '../patreonApi';
+import { RawPatreonObject } from '../rawPatreonObject';
 
 /**
  * A reward data object.
  */
-export class Reward {
-  /**
-   * The api instance used to fetch this reward.
-   */
-  api: PatreonAPI;
-  /**
-   * The type of a Reward object is 'reward'.
-   */
-  readonly type: string = 'reward';
-  /**
-   * Identifying number of this Reward.
-   */
-  id: string;
+export class Reward extends PatreonObject {
   /**
    * Monetary amount necessary to unlock this reward, in USD cents.
    */
@@ -84,35 +75,35 @@ export class Reward {
   unpublishedAt: Date;
 
   /**
-   * Parses a ReST data API object into a Reward object.
-   * @param source ReST data API object.
-   * @param api the api instance.
+   * Constructs a new reward object.
+   * @param api the api instance used for previous and further interaction with
+   *            the Patreon API.
+   * @param id identifying number of this object.
    */
-  static parse(data: any, api: PatreonAPI): Reward {
-    const att: any = data.attributes;
-    const reward = new Reward();
-    Object.assign(reward, {
-      api: api,
-      id: data.id,
-      amount: att.amount_cents,
-      userLimit: att.user_limit,
-      remaining: att.remaining,
-      description: att.description,
-      requiresShipping: att.requires_shipping,
-      createdAt: new Date(att.created_at),
-      url: att.url,
-      patronCount: att.patron_count,
-      postCount: att.post_count,
-      discordRoleIds: att.discord_role_ids,
-      title: att.title,
-      imageUrl: att.image_url,
-      editedAt: new Date(att.edited_at),
-      published: att.published,
-      publishedAt: att.published_at === null ?
-        null : new Date(att.published_at),
-      unpublishedAt: att.unpublished_at === null ?
-        null : new Date(att.unpublished_at)
-    })
-    return reward;
+  constructor(api: PatreonAPI, id: string) {
+    super(api, 'reward', id);
+  }
+
+  parse(data: RawPatreonObject, dataStore: DataStore): void {
+    const att = data.attributes;
+    
+    this.amount = att.amount_cents,
+    this.userLimit = att.user_limit,
+    this.remaining = att.remaining,
+    this.description = att.description,
+    this.requiresShipping = att.requires_shipping,
+    this.createdAt = new Date(att.created_at),
+    this.url = att.url,
+    this.patronCount = att.patron_count,
+    this.postCount = att.post_count,
+    this.discordRoleIds = att.discord_role_ids,
+    this.title = att.title,
+    this.imageUrl = att.image_url,
+    this.editedAt = new Date(att.edited_at),
+    this.published = att.published,
+    this.publishedAt = att.published_at === null ?
+      null : new Date(att.published_at),
+    this.unpublishedAt = att.unpublished_at === null ?
+      null : new Date(att.unpublished_at)
   }
 }

@@ -40,26 +40,25 @@ test('parse reward', () => {
     },
     type: 'reward'
   };
-  const expectedResult = new Reward();
-  Object.assign(expectedResult, {
-    api: null,
-    id: '4017190',
-    amount: 500,
-    userLimit: null,
-    remaining: null,
-    description: 'You\'ll receive superpowers!',
-    requiresShipping: false,
-    createdAt: new Date('2019-09-23T20:21:56.966+00:00'),
-    url: '/join/mycampaign/checkout?rid=4017190',
-    patronCount: 3,
-    postCount: 0,
-    discordRoleIds: null,
-    title: 'Superpatron',
-    imageUrl: null,
-    editedAt: new Date('2019-09-23T21:16:01.134+00:00'),
-    published: true,
-    publishedAt: new Date('2019-09-23T21:16:01.123+00:00'),
-    unpublishedAt: null
-  });
-  expect(Reward.parse(input, null)).toEqual(expectedResult);
+  const expectedResult = new Reward(null, '4017190');
+  expectedResult.amount = 500;
+  expectedResult.userLimit = null;
+  expectedResult.remaining = null;
+  expectedResult.description = 'You\'ll receive superpowers!';
+  expectedResult.requiresShipping = false;
+  expectedResult.createdAt = new Date('2019-09-23T20:21:56.966+00:00');
+  expectedResult.url = '/join/mycampaign/checkout?rid=4017190';
+  expectedResult.patronCount = 3;
+  expectedResult.postCount = 0;
+  expectedResult.discordRoleIds = null;
+  expectedResult.title = 'Superpatron';
+  expectedResult.imageUrl = null;
+  expectedResult.editedAt = new Date('2019-09-23T21:16:01.134+00:00');
+  expectedResult.published = true;
+  expectedResult.publishedAt = new Date('2019-09-23T21:16:01.123+00:00');
+  expectedResult.unpublishedAt = null;
+
+  const reward = new Reward(null, '4017190');
+  reward.parse(input, null);
+  expect(reward).toEqual(expectedResult);
 })

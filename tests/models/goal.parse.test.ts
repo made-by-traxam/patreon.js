@@ -12,20 +12,19 @@ test('parse goal', () => {
       title: '💯'
     },
     id: '1554387',
-    type: 'goal'
-  };
-  const expectedResult = new Goal();
-  Object.assign(expectedResult, {
-    api: null,
     type: 'goal',
-    id: '1554387',
-    title: '💯',
-    description: 'We will work harder.',
-    amount: 10000,
-    currency: 'USD',
-    progress: 58,
-    createdAt: new Date('2019-09-24T11:31:04.000+00:00'),
-    reachedAt: new Date('2019-10-03T22:25:14.000+00:00')
-  });
-  expect(Goal.parse(input, null)).toEqual(expectedResult);
+    relationships: {}
+  };
+  const expectedResult = new Goal(null, '1554387');
+  expectedResult.title = '💯';
+  expectedResult.description = 'We will work harder.';
+  expectedResult.amount = 10000;
+  expectedResult.currency = 'USD';
+  expectedResult.progress = 58;
+  expectedResult.createdAt = new Date('2019-09-24T11:31:04.000+00:00');
+  expectedResult.reachedAt = new Date('2019-10-03T22:25:14.000+00:00');
+  
+  const goal = new Goal(null, '1554387');
+  goal.parse(input, null);
+  expect(goal).toEqual(expectedResult);
 });

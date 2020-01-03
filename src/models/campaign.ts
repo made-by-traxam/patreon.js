@@ -2,25 +2,18 @@ import { User } from "./user";
 import { Pledge } from "./pledge";
 import { PatreonAPI } from "../patreonApi";
 import { Page } from "../page";
+import { PatreonObject } from "../patreonObject";
+import { Goal } from "./goal";
+import { Reward } from "./reward";
+import { DataStore } from "../dataStore";
+import { RawPatreonObject } from "../rawPatreonObject";
 
 /**
  * A campaign data object.
  * 
  * @see https://docs.patreon.com/#campaign API documentation
  */
-export class Campaign {
-  /**
-   * The api class used to fetch this campaign.
-   */
-  api: PatreonAPI;
-  /**
-   * The type of Campaign objects is 'campaign'.
-   */
-  readonly type: string = 'campaign';
-  /**
-   * Identifying number of this campaign.
-   */
-  id: string;
+export class Campaign extends PatreonObject {
   /**
    * The creator's summary of their campaign.
    */
@@ -73,7 +66,7 @@ export class Campaign {
    * Datetime that the creator first began the campaign creation process.
    * @see publishedAt
    */
-  creationTime: Date;
+  createdAt: Date;
   /**
    * Datetime that the creator most recently published (made publicly visible)
    * the campaign.
@@ -95,11 +88,21 @@ export class Campaign {
    * The campaign owner.
    */
   creator: User;
-  rewards: unknown[];
+  rewards: Reward[];
   /**
    * The campaign's goals
    */
-  goals: unknown[];
+  goals: Goal[];
+
+  /**
+   * Constructs a new campaign object.
+   * @param api the api instance used for previous and further interaction with
+   *            the Patreon API.
+   * @param id identifying number of this object.
+   */
+  constructor(api: PatreonAPI, id: string) {
+    super(api, 'campaign', id);
+  }
 
   /**
    * Fetches pledges for this campaign.
@@ -124,37 +127,33 @@ export class Campaign {
     return pledges;
   }
 
-  /**
-   * Parses a ReST data API object into a Pledge object.
-   * @param source rest data API object.
-   */
-  static parse(data: any, api: PatreonAPI): Campaign {
-    const att: any = data.attributes;
-    const campaign = new Campaign();
-    Object.assign(campaign, {
-      api: api,
-      id: data.id,
-      summary: att.summary,
-      creationName: att.creation_name,
-      payPerName: att.pay_per_name,
-      oneLiner: att.one_liner,
-      mainVideoEmbed: att.main_video_embed,
-      mainVideoUrl: att.main_video_url,
-      imageUrl: att.image_url,
-      smallImageUrl: att.image_small_url,
-      thanksVideoUrl: att.thanks_video_url,
-      thanksEmbed: att.thanks_embed,
-      thanksMessage: att.thanks_msg,
-      isMonthly: att.is_monthly,
-      isNSFW: att.is_nsfw,
-      createdAt: new Date(att.created_at),
-      publishedAt: new Date(att.published_at),
-      pledgeUrl: att.pledge_url,
-      pledgeSum: att.pledge_sum,
-      patronCount: att.patron_count,
-      creationCount: att.creation_count,
-      outstandingPaymentAmountCents: att.outstanding_payment_amount_cents,
-    });
-    return campaign;
+  parse(data: RawPatreonObject, dataStore: DataStore): void {
+    const att = data.attributes;
+    const rel = data.relationships;
+
+    this.summary = att.summary;
+    this.creationName = att.creation_name;
+    this.payPerName = att.pay_per_name;
+    this.oneLiner = att.one_liner;
+    this.mainVideoEmbed = att.main_video_embed;
+    this.mainVideoUrl = att.main_video_url;
+    this.imageUrl = att.image_url;
+    this.smallImageUrl = att.image_small_url;
+    this.thanksVideoUrl = att.thanks_video_url;
+    this.thanksEmbed = att.thanks_embed;
+    this.thanksMessage = att.thanks_msg;
+    this.isMonthly = att.is_monthly;
+    this.isNSFW = att.is_nsfw;
+    this.createdAt = new Date(att.created_at);
+    this.publishedAt = new Date(att.published_at);
+    this.pledgeUrl = att.pledge_url;
+    this.pledgeSum = att.pledge_sum;
+    this.patronCount = att.patron_count;
+    this.creationCount = att.creation_count;
+    this.outstandingPaymentAmountCents = att.outstanding_payment_amount_cents;
+    
+    this.creator = dataStore.getUser(rel.creator);
+    this.rewards = dataStore.getRewards(rel.rewards);
+    this.goals = dataStore.getGoals(rel.goals);
   }
 }
