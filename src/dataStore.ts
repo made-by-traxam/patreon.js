@@ -4,6 +4,7 @@ import { User } from "./models/user";
 import { Reward } from "./models/reward";
 import { Goal } from "./models/goal";
 import { PatreonObject } from "./patreonObject";
+import { RawPatreonObject, WrappedRawPatreonObject } from "./rawPatreonObject";
 import { PatreonAPI } from "./patreonApi";
 import { Address } from "./models/address";
 
@@ -49,7 +50,84 @@ export class DataStore {
     this.goals = [];
   }
 
+  /**
+   * Parses an API response into a data store.
+   * @param response the api response as an object.
+   * @see primaryObject for the object in `response.data`
+   */
+  parseResponse(response: WrappedRawPatreonObject &
+                                  {included?: RawPatreonObject[]}) {
+    const included = response.included;
+    if (included !== undefined) {
+      included.forEach(object => {
+        this._parseObject(object);
+      });
+    }
+    
+    const data = response.data;
+    if (Array.isArray(response.data)) {
+      const array = <RawPatreonObject[]> data;
+      this.primaryObject = array.map(raw => this._parseObject(raw));
+    } else {
+      const single = <RawPatreonObject> data;
+      this.primaryObject = this._parseObject(single);
+    }
+  }
 
+  private _parseObject(raw: RawPatreonObject): PatreonObject {
+    const obj = this._getOrCreate(raw.type, raw.id);
+    obj.parse(raw, this);
+    return obj;
+  }
+
+  private _getOrCreate(type: string, id: string): PatreonObject {
+    var Type;
+    switch(type) {
+      case 'address':
+        let address = this._getAddress(id);
+        if (address === undefined) {
+          address = new Address(this.api, id);
+          this.addresses.push(address);
+        }
+        return address;
+      case 'campaign':
+        let campaign = this._getCampaign(id);
+        if (campaign === undefined) {
+          campaign = new Campaign(this.api, id);
+          this.campaigns.push(campaign);
+        }
+        return campaign;
+      case 'goal':
+        let goal = this._getGoal(id);
+        if (goal === undefined) {
+          goal = new Goal(this.api, id);
+          this.goals.push(goal);
+        }
+        return goal;
+      case 'pledge':
+        let pledge = this._getPledge(id);
+        if (pledge === undefined) {
+          pledge = new Pledge(this.api, id);
+          this.pledges.push(pledge);
+        }
+        return pledge;
+      case 'reward':
+        let reward = this._getReward(id);
+        if (reward === undefined) {
+          reward = new Reward(this.api, id);
+          this.rewards.push(reward);
+        }
+        return reward;
+      case 'user':
+        let user = this._getUser(id);
+        if (user === undefined) {
+          user = new User(this.api, id);
+          this.users.push(user);
+        }
+        return user;
+      default:
+        return undefined; // we don't have or want such objects in our data
+    }
   }
 
   private _getUser(id: string): User {

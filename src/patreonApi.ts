@@ -29,7 +29,7 @@ export class PatreonAPI {
    */
   async getCurrentUser(): Promise<User> {
     const body: any = await this.requestApiResource('/current_user');
-    return <User> new DataStore(body).primaryObject;
+    return <User> this._parseResponse(body);
   }
 
   /**
@@ -38,7 +38,7 @@ export class PatreonAPI {
   async getCurrentUserCampaigns(): Promise<Campaign[]> {
     const body: any = await this.requestApiResource('/current_user/campaigns');
     const data: Array<any> = body.data;
-    return <Campaign[]> new DataStore(body).primaryObject;
+    return <Campaign[]> this._parseResponse(body);
   }
 
   /**
@@ -53,7 +53,7 @@ export class PatreonAPI {
     const api = this;
     const body: any = await this._requestApiResourceFullyQualified(url);
     const data: Array<any> = body.data;
-    const pledges = <Pledge[]> new DataStore(body).primaryObject;
+    const pledges = <Pledge[]> this._parseResponse(body);
     const nextUrl: string = body.links.next;
     return {
       contents: pledges,
@@ -89,5 +89,11 @@ export class PatreonAPI {
         }
       });
     });
+  }
+
+  private _parseResponse(response: any) {
+    const dataStore = new DataStore(this);
+    dataStore.parseResponse(response);
+    return dataStore.primaryObject;
   }
 }
