@@ -59,6 +59,16 @@ export class Address extends PatreonObject {
 
   parse(data: { attributes: any; relationships?: any; },
       dataStore: DataStore): void {
-    // todo
+    const att = data.attributes;
+
+    this.addressee = att.addressee;
+    this.line1 = att.line_1;
+    this.line2 = att.line_2;
+    this.postalCode = att.postal_code;
+    this.city = att.city;
+    this.state = att.state;
+    this.country = att.country;
+    this.phoneNumber = att.phone_number;
+    this.createdAt = new Date(att.created_at);
   }
 }
