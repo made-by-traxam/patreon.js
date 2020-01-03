@@ -95,8 +95,10 @@ export class DataStore {
   /**
    * Gets a referenced reward.
    * @param ref a reward reference.
+   * @returns the referenced reward or null if the reference is nullish.
    */
   getReward(ref: Reference): Reward {
+    if (this._isRefNullish(ref)) return null;
     return this._getReward(ref.data.id);
   }
 
@@ -135,8 +137,19 @@ export class DataStore {
   /**
    * Gets a referenced address.
    * @param ref an address reference.
+   * @returns the referenced address or null if the reference is nullish.
    */
   getAddress(ref: Reference): Address {
+    if (this._isRefNullish(ref)) return null;
     return this._getAddress(ref.data.id);
+  }
+
+  /**
+   * Checks whether a reference is nullish.
+   * @param ref the reference to check.
+   * @returns false if the reference or the included data is null.
+   */
+  private _isRefNullish(ref: Reference): boolean {
+    return ref === null || ref.data === null
   }
 }
