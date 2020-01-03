@@ -4,6 +4,7 @@ import { User } from "./models/user";
 import { Reward } from "./models/reward";
 import { Goal } from "./models/goal";
 import { PatreonObject } from "./patreonObject";
+import { Address } from "./models/address";
 
 /**
  * A data model only containing a reference.
@@ -30,6 +31,7 @@ export class DataStore {
   pledges: Pledge[];
   rewards: Reward[];
   goals: Goal[];
+  addresses: Address[];
 
   constructor(object: any) {
 
@@ -93,5 +95,17 @@ export class DataStore {
    */
   getGoals(refs: ReferenceCollection): Goal[] {
     return refs.data.map(ref => this._getGoal(ref.id));
+  }
+
+  private _getAddress(id: string): Address {
+    return this.addresses.find(address => address.id === id);
+  }
+
+  /**
+   * Gets a referenced address.
+   * @param ref an address reference.
+   */
+  getAddress(ref: Reference): Address {
+    return this._getAddress(ref.data.id);
   }
 }

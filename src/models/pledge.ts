@@ -1,6 +1,8 @@
 import { User } from "./user";
 import { PatreonObject } from "../patreonObject";
 import { DataStore } from "../dataStore";
+import { Reward } from "./reward";
+import { Address } from "./address";
 
 /**
  * A pledge data object.
@@ -44,9 +46,9 @@ export class Pledge extends PatreonObject {
   hasShippingAddress?: boolean;
 
   patron: User;
-  reward: unknown;
+  reward: Reward;
   creator: User;
-  address: unknown;
+  address: Address;
 
   /**
    * Checks if the pledge is invalid.
@@ -76,6 +78,6 @@ export class Pledge extends PatreonObject {
     this.patron = dataStore.getUser(rel.patron);
     this.reward = dataStore.getReward(rel.reward);
     this.creator = dataStore.getUser(rel.creator);
-    this.address = null; // todo
+    this.address = dataStore.getAddress(rel.address);
   }
 }
