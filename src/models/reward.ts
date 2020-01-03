@@ -1,6 +1,7 @@
 import { PatreonObject } from '../patreonObject';
 import { DataStore } from '../dataStore';
 import { PatreonAPI } from '../patreonApi';
+import { RawPatreonObject } from '../rawPatreonObject';
 
 /**
  * A reward data object.
@@ -83,8 +84,7 @@ export class Reward extends PatreonObject {
     super(api, 'reward', id);
   }
 
-  parse(data: {attributes: any, relationships: any},
-      dataStore: DataStore): void {
+  parse(data: RawPatreonObject, dataStore: DataStore): void {
     const att = data.attributes;
     
     this.amount = att.amount_cents,

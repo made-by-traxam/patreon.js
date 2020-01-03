@@ -1,6 +1,7 @@
 import { PatreonAPI } from "../patreonApi";
 import { PatreonObject } from "../patreonObject";
 import { DataStore } from "../dataStore";
+import { RawPatreonObject } from "../rawPatreonObject";
 
 /**
  * A goal data object.
@@ -49,8 +50,7 @@ export class Goal extends PatreonObject {
     super(api, 'goal', id);
   }
 
-  parse(data: {attributes: any, relationships: any},
-      dataStore: DataStore): void {
+  parse(data: RawPatreonObject, dataStore: DataStore): void {
     const att = data.attributes;
 
     this.title = att.title;

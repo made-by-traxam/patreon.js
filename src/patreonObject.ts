@@ -1,5 +1,6 @@
 import { PatreonAPI } from "./patreonApi";
 import { DataStore } from "./dataStore";
+import { RawPatreonObject } from "./rawPatreonObject";
 
 /**
  * An object in the Patreon context.
@@ -37,6 +38,5 @@ export abstract class PatreonObject {
    * @param data the raw API data.
    * @param dataStore a data store used for getting related objects.
    */
-  abstract parse(data: {attributes: any, relationships: any},
-    dataStore: DataStore): void;
+  abstract parse(data: RawPatreonObject, dataStore: DataStore): void;
 }

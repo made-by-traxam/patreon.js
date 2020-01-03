@@ -4,6 +4,7 @@ import { DataStore } from "../dataStore";
 import { PatreonAPI } from "../patreonApi";
 import { Reward } from "./reward";
 import { Address } from "./address";
+import { RawPatreonObject } from "../rawPatreonObject";
 
 /**
  * A pledge data object.
@@ -69,8 +70,7 @@ export class Pledge extends PatreonObject {
     return this.declinedSince !== null;
   }
 
-  parse(data: {attributes: any, relationships: any},
-      dataStore: DataStore): void {
+  parse(data: RawPatreonObject, dataStore: DataStore): void {
     const att = data.attributes;
     const rel = data.relationships;
     

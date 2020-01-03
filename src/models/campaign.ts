@@ -6,6 +6,7 @@ import { PatreonObject } from "../patreonObject";
 import { Goal } from "./goal";
 import { Reward } from "./reward";
 import { DataStore } from "../dataStore";
+import { RawPatreonObject } from "../rawPatreonObject";
 
 /**
  * A campaign data object.
@@ -126,8 +127,7 @@ export class Campaign extends PatreonObject {
     return pledges;
   }
 
-  parse(data: {attributes: any, relationships: any},
-      dataStore: DataStore): void {
+  parse(data: RawPatreonObject, dataStore: DataStore): void {
     const att = data.attributes;
     const rel = data.relationships;
 
