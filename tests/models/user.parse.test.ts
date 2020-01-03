@@ -28,26 +28,27 @@ test('parse user', () => {
       campaign: null
     }
   };
-  var expectedResult: User = {
-    type: 'user',
-    id: '0000000',
-    email: 'corgi@example.com',
-    about: 'Corgi is a developer',
-    firstName: 'Corgi',
-    lastName: 'The Dev',
-    vanity: 'corgithedev',
-    imageUrl: 'https://c8.patreon.com/2/400/0000000',
-    thumbUrl: 'https://c8.patreon.com/2/100/0000000',
-    creationTime: new Date('2017-10-20T21:36:23+00:00'),
-    url: 'https://www.patreon.com/corgithedev',
-    likeCount: 10,
-    commentCount: 42,
-    socialConnections: {
-      facebook: null,
-      facebookId: null,
-      twitter: 'corgiHandle',
-      youtube: 'youtube data',
-    }
-  }
-  expect(User.parse(input)).toEqual<User>(expectedResult);
+  const expectedResult = new User(null, '0000000');
+  expectedResult.email = 'corgi@example.com';
+  expectedResult.about = 'Corgi is a developer';
+  expectedResult.firstName = 'Corgi';
+  expectedResult.lastName = 'The Dev';
+  expectedResult.vanity = 'corgithedev';
+  expectedResult.imageUrl = 'https://c8.patreon.com/2/400/0000000';
+  expectedResult.thumbUrl = 'https://c8.patreon.com/2/100/0000000';
+  expectedResult.creationTime = new Date('2017-10-20T21:36:23+00:00');
+  expectedResult.url = 'https://www.patreon.com/corgithedev';
+  expectedResult.likeCount = 10;
+  expectedResult.commentCount = 42;
+  expectedResult.socialConnections = {
+    facebook: null,
+    facebookId: null,
+    twitter: 'corgiHandle',
+    youtube: 'youtube data',
+  };
+
+  const user = new User(null, '0000000');
+  user.parse(input, null);
+  
+  expect(user).toEqual<User>(expectedResult);
 })
