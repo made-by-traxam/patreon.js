@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "outFile": "./dist/patreon.js",
+    "outDir": "./dist",
     "allowJs": false,
     "target": "ES5",
-    "module": "amd",
+    "module": "commonjs",
     "moduleResolution": "node",
     "declaration": true
   },
