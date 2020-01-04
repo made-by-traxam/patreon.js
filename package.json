@@ -1,9 +1,9 @@
 {
   "name": "patreon.js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "JS wrapper for the Patreon ReST API",
-  "main": "./dist/patreon.js",
-  "types": "./dist/patreon.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "npx semistandard & npx jest",
     "build": "npx tsc && jsmin -o dist/patreon.min.js dist/patreon.js"
