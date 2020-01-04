@@ -2,9 +2,11 @@
   "name": "patreon.js",
   "version": "0.0.1",
   "description": "JS wrapper for the Patreon ReST API",
-  "main": "index.js",
+  "main": "./dist/patreon.js",
+  "types": "./dist/patreon.d.ts",
   "scripts": {
-    "test": "npx standard"
+    "test": "npx semistandard & npx jest",
+    "build": "npx tsc && jsmin -o dist/patreon.min.js dist/patreon.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,15 @@
   },
   "homepage": "https://gitlab.com/traxam/patreon.js#readme",
   "devDependencies": {
-    "standard": "^14.3.1"
+    "@types/jest": "^24.0.25",
+    "@types/request": "^2.48.4",
+    "jest": "^24.9.0",
+    "jsmin": "^1.0.1",
+    "semistandard": "^14.2.0",
+    "ts-jest": "^24.2.0"
+  },
+  "dependencies": {
+    "request": "^2.88.0",
+    "typescript": "^3.7.4"
   }
 }

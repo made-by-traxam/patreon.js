@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outFile": "./dist/patreon.js",
+    "allowJs": false,
+    "target": "ES5",
+    "module": "amd",
+    "moduleResolution": "node",
+    "declaration": true
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}
