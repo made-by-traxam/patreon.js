@@ -6,7 +6,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "npx semistandard & npx jest",
-    "build": "npx tsc && jsmin -o dist/patreon.min.js dist/patreon.js",
+    "build": "npx tsc",
     "docs": "npx typedoc --out ./docs --mode file ./src"
   },
   "repository": {
