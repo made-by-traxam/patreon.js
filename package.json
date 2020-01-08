@@ -6,7 +6,8 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "npx semistandard & npx jest",
-    "build": "npx tsc && jsmin -o dist/patreon.min.js dist/patreon.js"
+    "build": "npx tsc && jsmin -o dist/patreon.min.js dist/patreon.js",
+    "docs": "npx typedoc --out ./docs --mode file ./src"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
     "jest": "^24.9.0",
     "semistandard": "^14.2.0",
     "ts-jest": "^24.2.0",
+    "typedoc": "^0.15.6",
     "typescript": "^3.7.4"
   },
   "dependencies": {
