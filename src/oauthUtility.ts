@@ -1,5 +1,9 @@
 import * as querystring from "querystring";
 
+/**
+ * Utility functions for the Patreon OAuth authorization flow.
+ * @see https://docs.patreon.com/#oauth
+ */
 export class PatreonOAuthUtility {
     static buildAuthorizationUrl(clientId: string, redirectUri: string): string {
         let query = {
@@ -9,5 +13,14 @@ export class PatreonOAuthUtility {
         };
         let queryString = querystring.stringify(query);
         return `https://www.patreon.com/oauth2/authorize?${queryString}`;
+    }
+
+    static parseRedirect(redirectQueryString: string):
+            {code: string, state?: string} {
+        let query = querystring.parse(redirectQueryString);
+        return {
+            code: <string> query.code,
+            state: <string | undefined> query.state
+        };
     }
 }
