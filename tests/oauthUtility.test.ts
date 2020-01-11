@@ -13,12 +13,24 @@ test('build basic authorization url', () => {
 });
 
 test('parse redirect query string', () => {
-    const redirectQueryString = '?code=secret&state=abc123';
+    const redirectQueryString = 'code=secret&state=abc123';
     const expectedResult = {
         code: 'secret',
         state: 'abc123'
     };
 
-    expect(PatreonOAuthUtility.parseRedirect(redirectQueryString))
-        .toBe(expectedResult);
-})
+    expect(PatreonOAuthUtility.parseRedirectQuery(redirectQueryString))
+        .toEqual(expectedResult);
+});
+
+test('parse redirect url', () => {
+    const redirectUrl = 'http://localhost:3000/auth/patreon?' +
+        'code=secret&state=abc123';
+    const expectedResult = {
+        code: 'secret',
+        state: 'abc123'
+    };
+
+    expect(PatreonOAuthUtility.parseRedirectUrl(redirectUrl))
+        .toEqual(expectedResult);
+});

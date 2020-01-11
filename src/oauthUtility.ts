@@ -17,15 +17,31 @@ export class PatreonOAuthUtility {
 
     /**
      * Parses the query string of an OAuth redirect into a code and a state.
-     * @see docs [Step 3](https://docs.patreon.com/#step-3-handling-oauth-redirect)
-     *           of the OAuth authorization flow documentation. 
+     * @param redirectQueryString the query string to parse, without the leading
+     *                            '?' character.
+     * @see Docs: [Step 3](https://docs.patreon.com/#step-3-handling-oauth-redirect)
+     *            of the OAuth authorization flow documentation.
+     * @see `parseRedirectUrl(string)`: for full-url-parsing.
      */
-    static parseRedirect(redirectQueryString: string):
+    static parseRedirectQuery(redirectQueryString: string):
             {code: string, state?: string} {
         let query = querystring.parse(redirectQueryString);
         return {
             code: <string> query.code,
             state: <string | undefined> query.state
         };
+    }
+
+    /**
+     * Parses the url of an OAuth redirect into a code and a state.
+     * @param redirectUrl the url to parse, including it's query string.
+     * @see Docs: [Step 3](https://docs.patreon.com/#step-3-handling-oauth-redirect)
+     *            of the OAuth authorization flow documentation.
+     * @see `parseRedirectQuery(string)`: for query-string parsing.
+     */
+    static parseRedirectUrl(redirectUrl: string):
+            {code: string, state?: string} {
+        let queryString = redirectUrl.substring(redirectUrl.indexOf('?') + 1);
+        return this.parseRedirectQuery(queryString);
     }
 }
