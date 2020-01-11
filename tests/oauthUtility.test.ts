@@ -11,3 +11,14 @@ test('build basic authorization url', () => {
     expect(PatreonOAuthUtility.buildAuthorizationUrl(clientId, redirectUri))
         .toBe(expectedOutput);
 });
+
+test('parse redirect query string', () => {
+    const redirectQueryString = '?code=secret&state=abc123';
+    const expectedResult = {
+        code: 'secret',
+        state: 'abc123'
+    };
+
+    expect(PatreonOAuthUtility.parseRedirect(redirectQueryString))
+        .toBe(expectedResult);
+})
