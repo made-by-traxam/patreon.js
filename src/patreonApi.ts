@@ -4,13 +4,17 @@ import { Campaign } from './models/campaign';
 import { Pledge } from './models/pledge';
 import { Page } from './page';
 import { DataStore } from './dataStore';
+import { PatreonAPIError } from './patreonAPIError';
 
 /**
  * Wrapper for the Patreon API.
  * @see https://docs.patreon.com/ API documentation
  */
 export class PatreonAPI {
-  readonly BASE_URL: string = 'https://www.patreon.com/api/oauth2/api';
+  /**
+   * The base URL of the Patreon OAuth2 API without a slash in the end.
+   */
+  static readonly BASE_URL: string = 'https://www.patreon.com/api/oauth2/api';
   /**
    * The access token used to authorize API requests.
    */
@@ -46,7 +50,7 @@ export class PatreonAPI {
    * @param campaignId the id of the campaign to fetch pledges for.
    */
   getCampaignPledges(campaignId: string): Promise<Page<Pledge>> {
-    return this._getCampaignPledges(this.BASE_URL + `/campaigns/${campaignId}/pledges`);
+    return this._getCampaignPledges(PatreonAPI.BASE_URL + `/campaigns/${campaignId}/pledges`);
   }
 
   private async _getCampaignPledges(url: string): Promise<Page<Pledge>> {
@@ -71,7 +75,7 @@ export class PatreonAPI {
    * @param route API endpoint, must start with a `/`
    */
   private requestApiResource(route: string): Promise<object> {
-    return this._requestApiResourceFullyQualified(this.BASE_URL + route);
+    return this._requestApiResourceFullyQualified(PatreonAPI.BASE_URL + route);
   }
 
   private _requestApiResourceFullyQualified(url: string): Promise<object> {
@@ -82,10 +86,12 @@ export class PatreonAPI {
           'Authorization': `Bearer ${this.accessToken}`,
         }
       }, (err, res, body) => {
-        if (!err && res.statusCode == 200) {
-          resolve(JSON.parse(body));
-        } else {
+        if (err) {
           reject(err);
+        } else if (res.statusCode !== 200) {
+          reject(PatreonAPIError.parse(JSON.parse(body)));
+        } else {
+          resolve(JSON.parse(body));
         }
       });
     });
