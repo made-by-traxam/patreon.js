@@ -63,10 +63,10 @@ export class PatreonAPIError extends Error {
   }
 
   /**
+   * Parses an API error response into `PatreonAPIError`s.
    * @param response the response body.
-   * @throws the first Patreon API error from the given response.
    */
-  static parseAndThrow(response: {errors: RawPatreonAPIError[]}): void {
+  static parse(response: {errors: RawPatreonAPIError[]}): PatreonAPIError[] {
     let errors = response.errors.map(raw => new PatreonAPIError().parse(raw));
     errors.forEach(error => {
       error.allErrors = errors;
@@ -75,6 +75,15 @@ export class PatreonAPIError extends Error {
       }
     });
 
-    throw errors[0];
+    return errors;
+  }
+
+  /**
+   * Parses the API error response into `PatreonAPIError`s and throws the first
+   * one.
+   * @throws the first Patreon API error from the given response.
+   */
+  static parseAndThrow(response: {errors: RawPatreonAPIError[]}): void {
+    throw PatreonAPIError.parse(response);
   }
 }

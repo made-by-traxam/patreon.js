@@ -4,6 +4,7 @@ import { Campaign } from './models/campaign';
 import { Pledge } from './models/pledge';
 import { Page } from './page';
 import { DataStore } from './dataStore';
+import { PatreonAPIError } from './patreonAPIError';
 
 /**
  * Wrapper for the Patreon API.
@@ -85,10 +86,12 @@ export class PatreonAPI {
           'Authorization': `Bearer ${this.accessToken}`,
         }
       }, (err, res, body) => {
-        if (!err && res.statusCode == 200) {
-          resolve(JSON.parse(body));
-        } else {
+        if (err) {
           reject(err);
+        } else if (res.statusCode !== 200) {
+          reject(PatreonAPIError.parse(JSON.parse(body)));
+        } else {
+          resolve(JSON.parse(body));
         }
       });
     });

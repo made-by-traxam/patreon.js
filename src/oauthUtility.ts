@@ -1,5 +1,6 @@
 import * as querystring from "querystring";
 import * as request from 'request';
+import { PatreonAPIError } from "./patreonAPIError";
 
 export interface RawTokens {
     access_token: string;
@@ -113,11 +114,13 @@ export class PatreonOAuthUtility {
                 },
                 qs: qs
             }, (err, res, body) => {
-                if (!err && res.statusCode === 200) {
+                if (err) {
+                    reject(err);
+                } else if (res.statusCode !== 200) {
+                    reject(PatreonAPIError.parse(JSON.parse(body)));
+                } else {
                     let rawTokens = JSON.parse(body);
                     resolve(PatreonOAuthUtility.parseTokens(rawTokens));
-                } else {
-                    reject(err);
                 }
             })
         });
