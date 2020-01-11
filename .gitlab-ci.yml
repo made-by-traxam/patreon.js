@@ -1,0 +1,36 @@
+include:
+  - template: SAST.gitlab-ci.yml
+  - template: Dependency-Scanning.gitlab-ci.yml
+
+image: node:latest
+
+before_script:
+- npm install
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+  - node_modules/
+
+stages:
+- build
+- test
+- deploy
+
+build:
+  stage: build
+  script:
+  - npm run-script build
+
+test:
+  stage: test
+  script:
+  - npm test
+
+deploy:
+  stage: deploy
+  only: master
+  script:
+  - npm run-script build
+  - npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
+  - npm publish
