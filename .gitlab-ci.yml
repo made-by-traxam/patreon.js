@@ -29,7 +29,9 @@ test:
 
 deploy:
   stage: deploy
-  only: master
+  only:
+    refs:
+    - master
   script:
   - npm run-script build
   - npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
