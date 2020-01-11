@@ -1,4 +1,4 @@
-import { PatreonOAuthUtility } from "../src/oauthUtility";
+import { PatreonOAuthUtility, Tokens } from "../src/oauthUtility";
 
 test('build basic authorization url', () => {
     const clientId = '00000';
@@ -33,4 +33,21 @@ test('parse redirect url', () => {
 
     expect(PatreonOAuthUtility.parseRedirectUrl(redirectUrl))
         .toEqual(expectedResult);
+});
+
+test('parse token set', () => {
+    const input = {
+        access_token: 'this is an access token',
+        refresh_token: 'this is a refresh token',
+        expires_in: 60 * 60 * 24 * 30, // 30 days
+        scope: 'users pledges-to-me my-campaign',
+        token_type: 'Bearer'
+    };
+    const expectedResult: Tokens = {
+        accessToken: 'this is an access token',
+        refreshToken: 'this is a refresh token',
+        expiresIn: 60 * 60 * 24 * 30
+    };
+
+    expect(PatreonOAuthUtility.parseTokens(input)).toEqual(expectedResult);
 });
