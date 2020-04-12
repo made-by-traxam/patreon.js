@@ -77,3 +77,9 @@ api.getCampaignPledges('campaignId')
 This project is released under the
 [MIT license](https://opensource.org/licenses/MIT). A copy of the license is
 included in the `LICENSE` file in this package.
+
+The GitLab project avatar is an
+[Icon image](https://www.flaticon.com/free-icon/patreon_2111511) by
+[Pixel Perfect](https://www.flaticon.com/authors/pixel-perfect) which is
+licensed with the
+[Flaticon Basic License](https://www.freepikcompany.com/legal#nav-flaticon-agreement).
