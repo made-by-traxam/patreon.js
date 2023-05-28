@@ -48,7 +48,10 @@ export class Pledge extends PatreonObject {
   hasShippingAddress?: boolean;
 
   patron: User;
-  reward: Reward;
+  /**
+   * Seems to be `null` sometimes.
+   */
+  reward: Reward | null;
   creator: User;
   address: Address;
 
