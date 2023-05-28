@@ -17,8 +17,17 @@ class Reference {
   }
 }
 
+/**
+ * A reference collection might be used in relationships to reference related
+ * objects (instead of including them).
+ */
 class ReferenceCollection {
-  data: [{
+  /**
+   * As of May 2023, the Patreon API seems to use `null` for empty reference
+   * collections, although the documentation uses an empty array for this case:
+   * https://docs.patreon.com/#fetch-a-creator-profile-and-campaign-info
+   */
+  data: null | [{
     id: string;
   }]
 }
@@ -185,7 +194,9 @@ export class DataStore {
    * @param refs a bunch of reward references.
    */
   getRewards(refs: ReferenceCollection): Reward[] {
-    return refs.data.map(ref => this._getReward(ref.id));
+    return refs.data === null
+      ? []
+      : refs.data.map(ref => this._getReward(ref.id));
   }
 
   private _getGoal(id: string): Goal {
@@ -205,7 +216,11 @@ export class DataStore {
    * @param refs a bunch of goal references.
    */
   getGoals(refs: ReferenceCollection): Goal[] {
-    return refs.data.map(ref => this._getGoal(ref.id));
+    if (refs.data === null) {
+      return [];
+    } else {
+      return refs.data.map(ref => this._getGoal(ref.id));
+    }
   }
 
   private _getAddress(id: string): Address {
