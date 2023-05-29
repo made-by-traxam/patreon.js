@@ -9,6 +9,7 @@ test('parse pledge with empty relationships', () => {
     id: '2745627',
     attributes: {
       amount_cents: 100,
+      currency: 'EUR',
       created_at: '2016-07-25T20:59:52+00:00',
       declined_since: null,
       pledge_cap_cents: null,
@@ -26,6 +27,7 @@ test('parse pledge with empty relationships', () => {
   };
   const expectedResult: Pledge = new Pledge(null, '2745627');
   expectedResult.amount = 100;
+  expectedResult.currency = 'EUR';
   expectedResult.createdAt = new Date('2016-07-25T20:59:52+00:00');
   expectedResult.declinedSince = null;
   expectedResult.pledgeCap = null;

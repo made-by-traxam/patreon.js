@@ -17,6 +17,10 @@ export class Pledge extends PatreonObject {
    */
   amount: number;
   /**
+   * Currency code for the amount of this pledge (USD, GBP, EUR etc.).
+   */
+  currency: string;
+  /**
    * Datetime this pledge was created.
    */
   createdAt: Date;
@@ -78,6 +82,7 @@ export class Pledge extends PatreonObject {
     const rel = data.relationships;
     
     this.amount = att.amount_cents;
+    this.currency = att.currency;
     this.createdAt = new Date(att.created_at);
     this.declinedSince = att.declined_since === null ?
       null : new Date(att.declined_since);
