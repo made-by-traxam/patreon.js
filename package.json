@@ -7,7 +7,8 @@
   "scripts": {
     "test": "npx semistandard & npx jest",
     "build": "npx tsc",
-    "docs": "npx typedoc --out ./docs --mode file ./src"
+    "docs": "npx typedoc --out ./docs --mode file ./src",
+    "dump": "npx ts-node ./tests/dump.ts"
   },
   "repository": {
     "type": "git",

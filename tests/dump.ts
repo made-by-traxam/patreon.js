@@ -21,7 +21,7 @@ async function dump() {
         
         const pledges = await campaign.getAllPledges();
         for (const pledge of pledges) {
-            console.log(`  * ${pledge.amount} from ${pledge.patron.firstName} ${pledge.patron.lastName} (${pledge.id})`);
+            console.log(`  * ${pledge.amount} cents (${pledge.currency}) from ${pledge.patron.firstName} ${pledge.patron.lastName} (${pledge.id})`);
         }
     }
 }
