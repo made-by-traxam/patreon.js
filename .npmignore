@@ -6,3 +6,4 @@ tests/
 *.env
 jest.config.js
 tsconfig.json
+typedoc.json

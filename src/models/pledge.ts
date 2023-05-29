@@ -77,6 +77,9 @@ export class Pledge extends PatreonObject {
     return this.declinedSince !== null;
   }
 
+  /**
+   * @internal
+   */
   parse(data: RawPatreonObject, dataStore: DataStore): void {
     const att = data.attributes;
     const rel = data.relationships;

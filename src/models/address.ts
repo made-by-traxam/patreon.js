@@ -1,6 +1,7 @@
 import { PatreonObject } from "../patreonObject";
 import { PatreonAPI } from "../patreonApi";
 import { DataStore } from "../dataStore";
+import { RawPatreonObject } from "../rawPatreonObject";
 
 /**
  * An address data object.
@@ -57,8 +58,10 @@ export class Address extends PatreonObject {
     super(api, 'address', id);
   }
 
-  parse(data: { attributes: any; relationships?: any; },
-      dataStore: DataStore): void {
+  /**
+   * @internal
+   */
+  parse(data: RawPatreonObject, dataStore: DataStore): void {
     const att = data.attributes;
 
     this.addressee = att.addressee;

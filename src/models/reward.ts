@@ -84,6 +84,9 @@ export class Reward extends PatreonObject {
     super(api, 'reward', id);
   }
 
+  /**
+   * @internal
+   */
   parse(data: RawPatreonObject, dataStore: DataStore): void {
     const att = data.attributes;
     

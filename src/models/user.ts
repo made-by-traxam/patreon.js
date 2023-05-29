@@ -76,6 +76,9 @@ export class User extends PatreonObject {
     super(api, 'user', id);
   }
 
+  /**
+   * @internal
+   */
   parse(data: RawPatreonObject, dataStore: DataStore): void {
     const att = data.attributes;
 
