@@ -127,6 +127,9 @@ export class Campaign extends PatreonObject {
     return pledges;
   }
 
+  /**
+   * @internal
+   */
   parse(data: RawPatreonObject, dataStore: DataStore): void {
     const att = data.attributes;
     const rel = data.relationships;

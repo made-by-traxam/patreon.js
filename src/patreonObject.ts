@@ -35,6 +35,7 @@ export abstract class PatreonObject {
 
   /**
    * Parses attribute and relationship data from an API data source.
+   * @internal
    * @param data the raw API data.
    * @param dataStore a data store used for getting related objects.
    */

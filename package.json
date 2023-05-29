@@ -1,17 +1,19 @@
 {
   "name": "patreon.js",
-  "version": "0.1.2",
-  "description": "JS wrapper for the Patreon ReST API",
+  "version": "0.2.0",
+  "description": "JS/TS wrapper for the Patreon ReST API",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "npx semistandard & npx jest",
     "build": "npx tsc",
-    "docs": "npx typedoc --out ./docs --mode file ./src"
+    "docs": "npx typedoc",
+    "dump": "npx ts-node ./tests/dump.ts",
+    "lint": "semistandard"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/traxam/patreon.js.git"
+    "url": "git://github.com/made-by-traxam/patreon.js.git"
   },
   "keywords": [
     "patreon",
@@ -21,20 +23,18 @@
   "author": "traxam",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/traxam/patreon.js/issues"
+    "url": "https://github.com/made-by-traxam/patreon.js/issues"
   },
-  "homepage": "https://gitlab.com/traxam/patreon.js#readme",
+  "homepage": "https://github.com/made-by-traxam/patreon.js#readme",
   "devDependencies": {
-    "@types/jest": "^24.0.25",
-    "@types/request": "^2.48.4",
+    "@types/jest": "^29.5.1",
+    "@types/request": "^2.48.8",
     "dotenv": "^16.0.3",
-    "jest": "^24.9.0",
-    "semistandard": "^14.2.0",
-    "ts-jest": "^24.2.0",
-    "typedoc": "^0.15.6",
+    "jest": "^29.5.0",
+    "request": "^2.88.2",
+    "semistandard": "^16.0.1",
+    "ts-jest": "^29.1.0",
+    "typedoc": "^0.24.7",
     "typescript": "^5.0.4"
-  },
-  "dependencies": {
-    "request": "^2.88.0"
   }
 }

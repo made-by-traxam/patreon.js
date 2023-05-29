@@ -50,6 +50,9 @@ export class Goal extends PatreonObject {
     super(api, 'goal', id);
   }
 
+  /**
+   * @internal
+   */
   parse(data: RawPatreonObject, dataStore: DataStore): void {
     const att = data.attributes;
 
