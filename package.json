@@ -1,6 +1,6 @@
 {
   "name": "patreon.js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "JS wrapper for the Patreon ReST API",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
