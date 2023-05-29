@@ -8,7 +8,8 @@
     "test": "npx semistandard & npx jest",
     "build": "npx tsc",
     "docs": "npx typedoc",
-    "dump": "npx ts-node ./tests/dump.ts"
+    "dump": "npx ts-node ./tests/dump.ts",
+    "lint": "semistandard"
   },
   "repository": {
     "type": "git",
@@ -26,16 +27,14 @@
   },
   "homepage": "https://github.com/made-by-traxam/patreon.js#readme",
   "devDependencies": {
-    "@types/jest": "^24.0.25",
-    "@types/request": "^2.48.4",
+    "@types/jest": "^29.5.1",
+    "@types/request": "^2.48.8",
     "dotenv": "^16.0.3",
-    "jest": "^24.9.0",
-    "semistandard": "^14.2.0",
-    "ts-jest": "^24.2.0",
+    "jest": "^29.5.0",
+    "request": "^2.88.2",
+    "semistandard": "^16.0.1",
+    "ts-jest": "^29.1.0",
     "typedoc": "^0.24.7",
     "typescript": "^5.0.4"
-  },
-  "dependencies": {
-    "request": "^2.88.0"
   }
 }
