@@ -1,7 +1,42 @@
-import { PatreonObject } from "../patreonObject";
-import { DataStore } from "../dataStore";
-import { PatreonAPI } from "../patreonApi";
-import { RawPatreonObject } from "../rawPatreonObject";
+import { PatreonObject } from '../patreonObject';
+import { DataStore } from '../dataStore';
+import { PatreonAPI } from '../patreonApi';
+import { RawPatreonObject } from '../rawPatreonObject';
+
+/**
+ * Social network profiles that are linked to a user.
+ */
+export class SocialConnections {
+  /**
+   * TODO: purpose/content unknown
+   */
+  facebookId?: string;
+  /**
+   * TODO: purpose/content unknown
+   */
+  facebook?: string;
+  /**
+   * TODO: purpose/content unknown
+   */
+  twitter?: string;
+  /**
+   * TODO: purpose/content unknown
+   */
+  youtube?: string;
+
+  /**
+   * Parses social media links form user attributes.
+   * @param attributes the attributes child of a User data object.
+   */
+  static parse (attributes: any): SocialConnections {
+    return {
+      facebookId: attributes.facebook_id,
+      facebook: attributes.facebook,
+      twitter: attributes.twitter,
+      youtube: attributes.youtube
+    };
+  }
+}
 
 /**
  * A user data object.
@@ -51,13 +86,13 @@ export class User extends PatreonObject {
   url: string;
   /**
    * Number of posts this user has liked.
-   * 
+   *
    * Is null if this value was not requested explicitly.
    */
   likeCount?: number;
   /**
    * Number of comments by this user.
-   * 
+   *
    * Is null if this value was not requested explicitly.
    */
   commentCount?: number;
@@ -72,14 +107,14 @@ export class User extends PatreonObject {
    *            the Patreon API.
    * @param id identifying number of this object.
    */
-  constructor(api: PatreonAPI, id: string) {
+  constructor (api: PatreonAPI, id: string) {
     super(api, 'user', id);
   }
 
   /**
    * @internal
    */
-  parse(data: RawPatreonObject, dataStore: DataStore): void {
+  parse (data: RawPatreonObject, dataStore: DataStore): void {
     const att = data.attributes;
 
     this.email = att.email;
@@ -92,44 +127,11 @@ export class User extends PatreonObject {
     this.creationTime = new Date(att.created);
     this.url = att.url;
     this.likeCount = att.like_count === undefined
-      ? null : att.like_count;
+      ? null
+      : att.like_count;
     this.commentCount = att.comment_count === undefined
-      ? null : att.comment_count;
+      ? null
+      : att.comment_count;
     this.socialConnections = SocialConnections.parse(att);
-  }
-}
-
-/**
- * Social network profiles that are linked to a user.
- */
-export class SocialConnections {
-  /**
-   * TODO: purpose/content unknown
-   */
-  facebookId?: string;
-  /**
-   * TODO: purpose/content unknown
-   */
-  facebook?: string;
-  /**
-   * TODO: purpose/content unknown
-   */
-  twitter?: string;
-  /**
-   * TODO: purpose/content unknown
-   */
-  youtube?: string;
-
-  /**
-   * Parses social media links form user attributes.
-   * @param attributes the attributes child of a User data object.
-   */
-  static parse(attributes: any): SocialConnections {
-    return {
-      facebookId: attributes.facebook_id,
-      facebook: attributes.facebook,
-      twitter: attributes.twitter,
-      youtube: attributes.youtube,
-    }
   }
 }

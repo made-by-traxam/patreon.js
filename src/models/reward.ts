@@ -80,33 +80,35 @@ export class Reward extends PatreonObject {
    *            the Patreon API.
    * @param id identifying number of this object.
    */
-  constructor(api: PatreonAPI, id: string) {
+  constructor (api: PatreonAPI, id: string) {
     super(api, 'reward', id);
   }
 
   /**
    * @internal
    */
-  parse(data: RawPatreonObject, dataStore: DataStore): void {
+  parse (data: RawPatreonObject, dataStore: DataStore): void {
     const att = data.attributes;
-    
-    this.amount = att.amount_cents,
-    this.userLimit = att.user_limit,
-    this.remaining = att.remaining,
-    this.description = att.description,
-    this.requiresShipping = att.requires_shipping,
-    this.createdAt = new Date(att.created_at),
-    this.url = att.url,
-    this.patronCount = att.patron_count,
-    this.postCount = att.post_count,
-    this.discordRoleIds = att.discord_role_ids,
-    this.title = att.title,
-    this.imageUrl = att.image_url,
-    this.editedAt = new Date(att.edited_at),
-    this.published = att.published,
-    this.publishedAt = att.published_at === null ?
-      null : new Date(att.published_at),
-    this.unpublishedAt = att.unpublished_at === null ?
-      null : new Date(att.unpublished_at)
+
+    this.amount = att.amount_cents;
+    this.userLimit = att.user_limit;
+    this.remaining = att.remaining;
+    this.description = att.description;
+    this.requiresShipping = att.requires_shipping;
+    this.createdAt = new Date(att.created_at);
+    this.url = att.url;
+    this.patronCount = att.patron_count;
+    this.postCount = att.post_count;
+    this.discordRoleIds = att.discord_role_ids;
+    this.title = att.title;
+    this.imageUrl = att.image_url;
+    this.editedAt = new Date(att.edited_at);
+    this.published = att.published;
+    this.publishedAt = att.published_at === null
+      ? null
+      : new Date(att.published_at);
+    this.unpublishedAt = att.unpublished_at === null
+      ? null
+      : new Date(att.unpublished_at);
   }
 }

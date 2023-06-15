@@ -1,7 +1,7 @@
-import { PatreonAPI } from "../patreonApi";
-import { PatreonObject } from "../patreonObject";
-import { DataStore } from "../dataStore";
-import { RawPatreonObject } from "../rawPatreonObject";
+import { PatreonAPI } from '../patreonApi';
+import { PatreonObject } from '../patreonObject';
+import { DataStore } from '../dataStore';
+import { RawPatreonObject } from '../rawPatreonObject';
 
 /**
  * A goal data object.
@@ -46,14 +46,14 @@ export class Goal extends PatreonObject {
    *            the Patreon API.
    * @param id identifying number of this object.
    */
-  constructor(api: PatreonAPI, id: string) {
+  constructor (api: PatreonAPI, id: string) {
     super(api, 'goal', id);
   }
 
   /**
    * @internal
    */
-  parse(data: RawPatreonObject, dataStore: DataStore): void {
+  parse (data: RawPatreonObject, dataStore: DataStore): void {
     const att = data.attributes;
 
     this.title = att.title;
