@@ -1,16 +1,16 @@
-import { User } from "./user";
-import { Pledge } from "./pledge";
-import { PatreonAPI } from "../patreonApi";
-import { Page } from "../page";
-import { PatreonObject } from "../patreonObject";
-import { Goal } from "./goal";
-import { Reward } from "./reward";
-import { DataStore } from "../dataStore";
-import { RawPatreonObject } from "../rawPatreonObject";
+import { User } from './user';
+import { Pledge } from './pledge';
+import { PatreonAPI } from '../patreonApi';
+import { Page } from '../page';
+import { PatreonObject } from '../patreonObject';
+import { Goal } from './goal';
+import { Reward } from './reward';
+import { DataStore } from '../dataStore';
+import { RawPatreonObject } from '../rawPatreonObject';
 
 /**
  * A campaign data object.
- * 
+ *
  * @see https://docs.patreon.com/#campaign API documentation
  */
 export class Campaign extends PatreonObject {
@@ -100,7 +100,7 @@ export class Campaign extends PatreonObject {
    *            the Patreon API.
    * @param id identifying number of this object.
    */
-  constructor(api: PatreonAPI, id: string) {
+  constructor (api: PatreonAPI, id: string) {
     super(api, 'campaign', id);
   }
 
@@ -108,7 +108,7 @@ export class Campaign extends PatreonObject {
    * Fetches pledges for this campaign.
    * @see PatreonAPI.getCampaignPledges
    */
-  public getPledges(): Promise<Page<Pledge>> {
+  public getPledges (): Promise<Page<Pledge>> {
     return this.api.getCampaignPledges(this.id);
   }
 
@@ -116,9 +116,9 @@ export class Campaign extends PatreonObject {
    * Fetches all pledges for this campaign. This request might take a long time
    * if your campaign has a lot of pledges.
    */
-  public async getAllPledges(): Promise<Pledge[]> {
-    var pledges: Pledge[] = [];
-    var currentPage: Page<Pledge> = await this.getPledges();
+  public async getAllPledges (): Promise<Pledge[]> {
+    const pledges: Pledge[] = [];
+    let currentPage: Page<Pledge> = await this.getPledges();
     pledges.push(...currentPage.contents);
     while (currentPage.hasNext()) {
       currentPage = await currentPage.getNext();
@@ -130,7 +130,7 @@ export class Campaign extends PatreonObject {
   /**
    * @internal
    */
-  parse(data: RawPatreonObject, dataStore: DataStore): void {
+  parse (data: RawPatreonObject, dataStore: DataStore): void {
     const att = data.attributes;
     const rel = data.relationships;
 
@@ -154,7 +154,7 @@ export class Campaign extends PatreonObject {
     this.patronCount = att.patron_count;
     this.creationCount = att.creation_count;
     this.outstandingPaymentAmountCents = att.outstanding_payment_amount_cents;
-    
+
     this.creator = dataStore.getUser(rel.creator);
     this.rewards = dataStore.getRewards(rel.rewards);
     this.goals = dataStore.getGoals(rel.goals);

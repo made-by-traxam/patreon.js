@@ -1,6 +1,6 @@
-import { PatreonAPI } from "./patreonApi";
-import { DataStore } from "./dataStore";
-import { RawPatreonObject } from "./rawPatreonObject";
+import { PatreonAPI } from './patreonApi';
+import { DataStore } from './dataStore';
+import { RawPatreonObject } from './rawPatreonObject';
 
 /**
  * An object in the Patreon context.
@@ -27,7 +27,7 @@ export abstract class PatreonObject {
    * @param type the object type identifier.
    * @param id identifying number for this object.
    */
-  constructor(api: PatreonAPI, type: string, id: string) {
+  constructor (api: PatreonAPI, type: string, id: string) {
     this.api = api;
     this.type = type;
     this.id = id;

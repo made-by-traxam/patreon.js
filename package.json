@@ -5,11 +5,11 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "npx semistandard & npx jest",
+    "test": "npx semistandard ./src/*.ts ./src/**/*.ts & npx jest",
     "build": "npx tsc",
     "docs": "npx typedoc",
     "dump": "npx ts-node ./tests/dump.ts",
-    "lint": "semistandard"
+    "lint": "semistandard ./src/*.ts ./src/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -29,12 +29,16 @@
   "devDependencies": {
     "@types/jest": "^29.5.1",
     "@types/request": "^2.48.8",
+    "@typescript-eslint/parser": "^5.59.11",
     "dotenv": "^16.0.3",
     "jest": "^29.5.0",
     "request": "^2.88.2",
-    "semistandard": "^16.0.1",
+    "semistandard": "^17.0.0",
     "ts-jest": "^29.1.0",
     "typedoc": "^0.24.7",
     "typescript": "^5.0.4"
+  },
+  "semistandard": {
+    "parser": "@typescript-eslint/parser"
   }
 }

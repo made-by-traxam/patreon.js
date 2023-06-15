@@ -37,13 +37,13 @@ export class PatreonAPIError extends Error {
    * All errors that were included within the API response. Sometimes, the
    * Patreon API responds with more than one error.
    */
-  allErrors: PatreonAPIError[];
+  allErrors: PatreonAPIError[]; // eslint-disable-line no-use-before-define
 
   /**
    * Constructs an unknown Patreon API error. Call `parse` afterwards or fill
    * remaining data manually.
    */
-  constructor() {
+  constructor () {
     super('The Patreon API responded with an error');
   }
 
@@ -52,13 +52,13 @@ export class PatreonAPIError extends Error {
    * @param raw the raw error to parse.
    * @return itself to allow chaining.
    */
-  parse(raw: RawPatreonAPIError) {
+  parse (raw: RawPatreonAPIError) {
     this.number = raw.code;
     this.codeName = raw.code_name;
     this.description = raw.detail;
     this.id = raw.id;
     this.title = raw.title;
-    this.message = `${this.title} -- ${this.description}`
+    this.message = `${this.title} -- ${this.description}`;
     return this;
   }
 
@@ -66,12 +66,12 @@ export class PatreonAPIError extends Error {
    * Parses an API error response into `PatreonAPIError`s.
    * @param response the response body.
    */
-  static parse(response: {errors: RawPatreonAPIError[]}): PatreonAPIError[] {
-    let errors = response.errors.map(raw => new PatreonAPIError().parse(raw));
+  static parse (response: {errors: RawPatreonAPIError[]}): PatreonAPIError[] {
+    const errors = response.errors.map(raw => new PatreonAPIError().parse(raw));
     errors.forEach(error => {
       error.allErrors = errors;
       if (errors.length > 1) {
-        error.message += ` (+ ${errors.length - 1} other Patreon API errors)`
+        error.message += ` (+ ${errors.length - 1} other Patreon API errors)`;
       }
     });
 
@@ -83,7 +83,7 @@ export class PatreonAPIError extends Error {
    * one.
    * @throws the first Patreon API error from the given response.
    */
-  static parseAndThrow(response: {errors: RawPatreonAPIError[]}): void {
+  static parseAndThrow (response: {errors: RawPatreonAPIError[]}): void {
     throw PatreonAPIError.parse(response);
   }
 }
